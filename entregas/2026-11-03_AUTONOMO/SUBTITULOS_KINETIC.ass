@@ -1,0 +1,52 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: KineticMain,DejaVu Sans,68,&H00FFFFFF,&H0000EAFF,&H00000000,&H96000000,-1,0,0,0,100,100,1.5,0,1,5.5,3.0,2,70,70,370,1
+Style: TopBadge,DejaVu Sans,34,&H00FFFFFF,&H00FFFFFF,&H00000000,&HB40000B0,-1,0,0,0,100,100,2.0,0,3,14.0,0.0,8,60,60,135,1
+Style: SubBadge,DejaVu Sans,26,&H0000EAFF,&H0000EAFF,&H00000000,&H96000000,-1,0,0,0,100,100,1.0,0,1,3.0,1.5,8,60,60,205,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 2,0:00:00.00,0:00:56.16,TopBadge,,0,0,0,,🔴 ÚLTIMA HORA · NOTICIERO 3D
+Dialogue: 2,0:00:00.00,0:00:56.16,SubBadge,,0,0,0,,FUENTE VERIFICADA: XATAKA TECNOLOGÍA & CIENCIA · RECREACIÓN TÁCTICA
+Dialogue: 1,0:00:00.10,0:00:01.29,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}UNA NOTICIA DE ALTO
+Dialogue: 1,0:00:01.29,0:00:02.54,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}{\c&H0000EAFF&}IMPACTO{\c&H00FFFFFF&} ACABA DE SER
+Dialogue: 1,0:00:02.54,0:00:03.59,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}CONFIRMADA HOY.
+Dialogue: 1,0:00:03.59,0:00:04.98,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}{\c&H00FFFF00&}GOOGLE{\c&H00FFFFFF&} RECIBE UN REVÉS
+Dialogue: 1,0:00:04.98,0:00:05.96,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}ANTE EL TJUE POR
+Dialogue: 1,0:00:05.96,0:00:07.08,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}EL USO DE NOTICIAS
+Dialogue: 1,0:00:07.08,0:00:08.01,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}EN {\c&H00FFFF00&}GEMINI{\c&H00FFFFFF&} Y LOS
+Dialogue: 1,0:00:08.01,0:00:09.59,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}MEDIOS GANAN TERRENO PARA
+Dialogue: 1,0:00:09.59,0:00:11.24,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}RECLAMAR COMPENSACIONES.
+Dialogue: 1,0:00:11.24,0:00:13.61,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}SEGÚN REPORTES OFICIALES CORROBORADOS
+Dialogue: 1,0:00:13.61,0:00:15.06,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}POR XATAKA TECNOLOGÍA &
+Dialogue: 1,0:00:15.06,0:00:17.56,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}CIENCIA, LOS ACONTECIMIENTOS COMENZARON
+Dialogue: 1,0:00:17.56,0:00:19.21,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}A DESARROLLARSE HACE POCAS
+Dialogue: 1,0:00:19.21,0:00:21.12,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}HORAS, DESATANDO UNA RESPUESTA
+Dialogue: 1,0:00:21.12,0:00:22.90,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}INMEDIATA DE LAS AUTORIDADES
+Dialogue: 1,0:00:22.90,0:00:23.89,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}Y EXPERTOS EN LA
+Dialogue: 1,0:00:23.89,0:00:26.26,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}MATERIA. LAS PRIMERAS INVESTIGACIONES
+Dialogue: 1,0:00:26.26,0:00:27.64,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}DE CAMPO REVELAN DATOS
+Dialogue: 1,0:00:27.64,0:00:29.42,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}CRÍTICOS QUE CONTRADICEN LAS
+Dialogue: 1,0:00:29.42,0:00:30.81,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}VERSIONES INICIALES.
+Dialogue: 1,0:00:30.81,0:00:32.91,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}EQUIPOS ESPECIALIZADOS TRABAJAN A
+Dialogue: 1,0:00:32.91,0:00:34.76,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}CONTRARRELOJ PARA CONTENER LA
+Dialogue: 1,0:00:34.76,0:00:36.21,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}SITUACIÓN Y EVALUAR LAS
+Dialogue: 1,0:00:36.21,0:00:37.99,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}REPERCUSIONES A GRAN ESCALA.
+Dialogue: 1,0:00:37.99,0:00:40.16,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}LOS ORGANISMOS INTERNACIONALES HAN
+Dialogue: 1,0:00:40.16,0:00:42.20,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}SOLICITADO UN INFORME EXHAUSTIVO
+Dialogue: 1,0:00:42.20,0:00:43.85,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}MIENTRAS SE CONTRASTAN LAS
+Dialogue: 1,0:00:43.85,0:00:45.63,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}EVIDENCIAS OFICIALES CON LOS
+Dialogue: 1,0:00:45.63,0:00:46.88,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}REPORTES DE PRENSA.
+Dialogue: 1,0:00:46.88,0:00:48.27,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}¿CREES QUE LAS MEDIDAS
+Dialogue: 1,0:00:48.27,0:00:50.11,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}ADOPTADAS SERÁN SUFICIENTES O
+Dialogue: 1,0:00:50.11,0:00:52.22,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}VEREMOS CONSECUENCIAS AÚN MAYORES
+Dialogue: 1,0:00:52.22,0:00:53.54,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}EN LOS PRÓXIMOS DÍAS?
+Dialogue: 1,0:00:53.54,0:00:54.79,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}DÉJAME TU POSTURA EN
+Dialogue: 1,0:00:54.79,0:00:55.91,KineticMain,,0,0,0,,{\fscx92\fscy92\t(0,90,\fscx114\fscy114)\t(90,180,\fscx100\fscy100)}LOS COMENTARIOS.

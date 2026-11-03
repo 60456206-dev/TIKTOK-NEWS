@@ -1,83 +1,96 @@
 # TikTok Radar · Paquete Noticiero Autónomo (2026-11-03)
 
-* **Titular Seleccionado:** Quiénes son las 9 víctimas del fatal accidente del avión privado que se estrelló en Florida
-* **Fuente:** BBC Mundo (Internacional / Impacto) ([Enlace directo](https://www.bbc.com/mundo/articles/cx054q17vvezo?at_medium=RSS&at_campaign=rss))
-* **Duración de Audio Verificada:** **62.69 segundos** (Cumple requisito >60 s de TikTok Creator Rewards)
-* **Número de Palabras:** 152 palabras.
+* **Titular Seleccionado:** Google recibe un revés ante el TJUE por el uso de noticias en Gemini y los medios ganan terreno para reclamar compensaciones
+* **Fuente:** Xataka Tecnología & Ciencia ([Enlace directo](https://www.xataka.com/robotica-e-ia/google-recibe-reves-tjue-uso-noticias-gemini-medios-ganan-terreno-para-reclamar-compensaciones))
+* **Duración de Audio Verificada:** **61.18 segundos** (Cumple requisito >60 s de TikTok Creator Rewards)
+* **Número de Palabras:** 141 palabras.
 * **Archivo de Voz Listo:** [`LOCUCION_NOTICIERO_62S.mp3`](LOCUCION_NOTICIERO_62S.mp3)
 
 ---
 
 ## Guión para Locutor
 
-En solo doce segundos, un avión privado con nueve personas a bordo desapareció por completo de los radares en Florida. Ocurrió al anochecer. Según la Administración Federal de Aviación, la aeronave volaba en altitud de crucero estable antes de iniciar un descenso vertical incontrolable. Adentro de la cabina, las luces de emergencia se encendieron. Los pilotos forcejearon contra los mandos intentando nivelar las alas, mientras la alarma de colisión ensordecía el habitáculo. Los motores rugieron al máximo empuje, pero los timones ya no respondían. Entre nubes de tormenta y lluvia torrencial, el bimotor se precipitó hacia la costa sin emitir ninguna señal de auxilio. Los peritos de la NTSB analizan ahora si fue una falla estructural catastrófica o una desorientación espacial en plena tormenta. Las cajas negras tardarán semanas en descifrarse. ¿Crees que fue una falla mecánica imposible de salvar o un error de los pilotos? Déjame tu opinión en los comentarios.
+Google acaba de recibir un duro revés judicial en Europa que podría transformar para siempre el entrenamiento de la inteligencia artificial. El Tribunal de Justicia de la Unión Europea determinó que el uso de noticias de medios para entrenar y responder con Gemini podría violar derechos editoriales, abriendo la puerta a indemnizaciones millonarias en todo el continente. Dentro de las oficinas tecnológicas, los equipos legales evalúan restringir de inmediato el acceso a fuentes periodísticas en tiempo real. Mientras tanto, los grandes grupos editoriales celebran un precedente histórico que obligaría a las corporaciones tecnológicas a pagar por cada artículo que procesan. Los expertos advierten que este fallo judicial cambiará por completo las reglas de internet este mismo año. Si la inteligencia artificial tiene que pagar por cada noticia que lee, ¿las herramientas gratuitas desaparecerán para siempre? Déjame tu opinión en los comentarios.
 
 ---
 
 ## Storyboard para Google Flow / Veo (13 Planos · 4–5 s)
 
-### SH01 (0-4s) · Radar/Contexto 3D
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Animación 3D táctica con holograma y datos de telemetría.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Animación 3D táctica con holograma y datos de telemetría. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH01 (0-5s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 1 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 1, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 1 with cyan and amber lighting.`
 
-### SH02 (4-9s) · Entorno Inicial
-- **Duración montaje:** 5.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Vista exterior estilizada al atardecer antes del conflicto.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Vista exterior estilizada al atardecer antes del conflicto. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH02 (5-10s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 2 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 2, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 2 with cyan and amber lighting.`
 
-### SH03 (9-14s) · Datos / Pantalla
-- **Duración montaje:** 5.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Telemetría digital con gráficos parpadeando en advertencia.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Telemetría digital con gráficos parpadeando en advertencia. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH03 (10-15s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 3 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 3, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 3 with cyan and amber lighting.`
 
-### SH04 (14-18s) · Recreación Personaje
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Primer plano a personaje con sudor, ceño fruncido y tensión gestual.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Primer plano a personaje con sudor, ceño fruncido y tensión gestual. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH04 (15-20s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 4 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 4, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 4 with cyan and amber lighting.`
 
-### SH05 (18-22s) · Acción Física
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Manos operando controles mecánicos bajo luces de emergencia.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Manos operando controles mecánicos bajo luces de emergencia. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH05 (20-25s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 5 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 5, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 5 with cyan and amber lighting.`
 
-### SH06 (22-26s) · Macro Detalle
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Detalle a indicador o aguja girando fuera de parámetros normales.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Detalle a indicador o aguja girando fuera de parámetros normales. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH06 (25-30s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 6 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 6, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 6 with cyan and amber lighting.`
 
-### SH07 (26-30s) · Escena Exterior Clímax
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Simulación física cinemática del suceso con efectos atmosféricos.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Simulación física cinemática del suceso con efectos atmosféricos. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH07 (30-35s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 7 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 7, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 7 with cyan and amber lighting.`
 
-### SH08 (30-34s) · Dinámica de Movimiento
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Cámara rápida siguiendo la trayectoria o impacto del suceso.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Cámara rápida siguiendo la trayectoria o impacto del suceso. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH08 (35-40s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 8 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 8, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 8 with cyan and amber lighting.`
 
-### SH09 (34-38s) · Reacción Crítica
-- **Duración montaje:** 4.0s (Generar en Flow/Veo: **5s**)
-- **Acción visual:** Último intento desesperado de estabilización o contención.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Último intento desesperado de estabilización o contención. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH09 (40-45s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 9 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 9, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 9 with cyan and amber lighting.`
 
-### SH10 (38-44s) · Infografía Técnica 3D
-- **Duración montaje:** 6.0s (Generar en Flow/Veo: **6s**)
-- **Acción visual:** Modelo 3D desglosado con diagramas técnicos transparentes.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Modelo 3D desglosado con diagramas técnicos transparentes. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH10 (45-50s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 10 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 10, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 10 with cyan and amber lighting.`
 
-### SH11 (44-50s) · Evidencia Oficial
-- **Duración montaje:** 6.0s (Generar en Flow/Veo: **6s**)
-- **Acción visual:** Documento o artefacto oficial flotando sobre fondo navy.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Documento o artefacto oficial flotando sobre fondo navy. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH11 (50-55s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 11 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 11, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 11 with cyan and amber lighting.`
 
-### SH12 (50-56s) · Panorama Tras el Suceso
-- **Duración montaje:** 6.0s (Generar en Flow/Veo: **6s**)
-- **Acción visual:** Vista panorámica con luces de búsqueda y atmósfera pesada.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Vista panorámica con luces de búsqueda y atmósfera pesada. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH12 (55-60s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 12 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 12, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 12 with cyan and amber lighting.`
 
-### SH13 (56-62.5s) · Cierre Interactivo
-- **Duración montaje:** 6.5s (Generar en Flow/Veo: **7s**)
-- **Acción visual:** Remate visual con caja de comentarios animada para detonar engagement.
-- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D animation, Arcane and tactical news thriller aesthetic. Remate visual con caja de comentarios animada para detonar engagement. Moody volumetric rim lighting, Unreal Engine 5 render style. No uncanny valley, no photorealism.`
+### SH13 (60-65s) · Escena 3D Noticiero
+- **Duración montaje:** 4.8s (Generar en Flow/Veo: **5s**)
+- **Acción visual:** Recreación 3D estilizada del plano 13 del reporte periodístico.
+- **Prompt Google Flow:** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Dramatic broadcast 3D news visualization scene 13, glowing holographic data panels and expressive stylized 3D environment, slow cinematic camera movement.`
+- **Prompt Fallback (Anti-Bloqueo):** `Vertical 9:16, modern stylized 3D cinematic animation, Arcane and Spider-Verse tactical news thriller aesthetic, Unreal Engine 5 volumetric lighting, rich stylized textures, no photorealism, no uncanny valley. Stylized 3D futuristic broadcast news studio hologram display scene 13 with cyan and amber lighting.`
 

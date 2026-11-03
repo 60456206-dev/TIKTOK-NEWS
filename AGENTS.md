@@ -1,25 +1,22 @@
-# Instrucciones y Memoria del Agente · TikTok Radar
+# Reglas del Agente · TikTok Radar (Servidor AWS y Desarrollo)
 
-Eres el copiloto técnico y director de producción de **TikTok Radar**, un noticiero vertical automatizado de alto impacto con **recreaciones en animación 3D estilizada** (sin hiperrealismo ni *uncanny valley*) y locución periodística profesional.
+Antes de trabajar en este repositorio, lee `ESTADO_PROYECTO.md` y `SUPERVISOR_SERVIDOR_AWS.md` para retomar el contexto completo del sistema autónomo.
 
----
+## 1. Propósito del Repositorio (`TIKTOK-NEWS`)
 
-## 1. Continuidad y Protocolo
-* Antes de cualquier trabajo, lee siempre `ESTADO_PROYECTO.md` para retomar el contexto y las entregas activas.
-* **Protocolo de Aprobación Rápida:** No hagas micro-preguntas ni interrumpas por detalles menores de código. Si hay una decisión crítica, preséntala en una ficha formal con opciones recomendadas por defecto (`PROTOCOLO_APROBACION_RAPIDA.md`).
+Este repositorio es el motor autónomo de producción del **Noticiero 3D de Alto Impacto** optimizado para monetización en TikTok (**> 60 segundos**, objetivo **61 a 65 segundos**).
 
----
+Consta de 3 módulos principales en `tools/`:
+1. `pipeline_autonomo.py` (apoyado en `news_radar.py`): Rastrea **Xataka**, **BBC Mundo** y **El País**, redacta el guión de 61–65 s, genera los 13 prompts en estilo **Animación 3D Estilizada** (`prompt` + `fallback_prompt`) y sintetiza la locución con `edge-tts` (`es-MX-JorgeNeural`).
+2. `flow_generator.py`: Inyector autónomo con Playwright sobre el perfil autenticado `~/flow-profile`. Posee auto-curación de bloqueos de Chrome (`SingletonLock`), cierre de popups (`Escape` x3), auto-aprobación del agente de Flow, reintento con `fallback_prompt` ante bloqueos de política y checkpointing plano a plano (`SH01.mp4`..`SH13.mp4`).
+3. `ensamblador_final.py`: Editor algorítmico NLE sobre FFmpeg Filtergraph + ASS Vector Engine. Aplica movimiento de cámara 24 fps, transiciones broadcast (`xfade`), subtítulos Kinetic palabra por palabra con resaltado cromático y masterización de audio multicapa a **`-14.8 LUFS`**.
+4. `ejecutar_todo.py`: Orquestador maestro de 1 solo comando.
 
-## 2. Reglas de Oro de Producción
+## 2. Reglas de Supervisión en el Servidor AWS
 
-1. **Monetización en TikTok Obligatoria (> 60 s):**
-   - La duración total de cada vídeo DEBE ser estrictamente de **61 a 65 segundos** (130–145 palabras).
-   - Los vídeos de menos de 60 segundos quedan descartados porque no monetizan en el *Creator Rewards Program*.
-2. **Duración de los Planos en IA (4 a 5 segundos):**
-   - En la herramienta generativa (Google Flow / Veo / Wan / Kling) genera clips de **4 a 5 segundos** (máximo 6 s).
-   - En el montaje final, corta cada plano cada **2,5 a 4,0 segundos** (12–14 planos en total) para mantener la adrenalina visual y evitar morfeos.
-3. **Estilo Visual (Cero Hiperrealismo):**
-   - Rechazo total de imágenes hiperrealistas con humanos sintéticos de plástico.
-   - Usar *Modern Stylized 3D Animation* (estilo *Arcane* / *Spider-Verse* / Unreal Engine 5), con personajes expresivos (tensión, sudor, gesticulación) o infografías 3D holográficas.
-4. **Voz del Locutor:**
-   - Tono periodístico de investigación, dicción urgente y micropausas de suspenso calculadas con Edge-TTS (`es-MX-JorgeNeural` o `es-PE-AlexNeural`).
+- **No pedir micro-confirmaciones:** Ejecutar el diagnóstico, reparar cualquier bloqueo y entregar el resultado verificado (`PROTOCOLO_APROBACION_RAPIDA.md`).
+- **Verificación de Vídeo Final:** Todo máster (`NOTICIERO_FINAL_62S.mp4`) debe verificarse con `ffprobe` / `ffmpeg` confirmando:
+  - Duración `> 60.0 s` (estándar 61–65 s).
+  - Resolución `1080x1920` a `24 fps`.
+  - Sonoridad integrada en torno a `-14.8 LUFS`.
+- **Cuidado de la Sesión `~/flow-profile`:** Nunca borrar las cookies de `~/flow-profile`. Solo limpiar archivos `SingletonLock`, `SingletonCookie` y `SingletonSocket` cuando no haya instancias activas de Chrome.

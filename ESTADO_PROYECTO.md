@@ -1,11 +1,20 @@
-# Estado del Proyecto · TikTok Radar
+# Estado del Proyecto · TikTok Radar (Servidor AWS Autónomo)
 
 Actualizado: 2026-11-03.
 
-## Resumen Ejecutivo
+## Estado Actual: Pipeline 100% Completo y Listo para Ejecución en AWS (`TIKTOK-NEWS`)
 
-TikTok Radar está 100% operativo y listo para producción como noticiero vertical automatizado:
-* **Escáner:** `tools/news_radar.py` monitorea Xataka, BBC Mundo y El País en tiempo real.
-* **Pipeline Autónomo:** `tools/pipeline_autonomo.py` selecciona noticias, redacta guiones para 61–65 segundos monetizables, genera 13 prompts para Google Flow y sintetiza la voz del locutor con Edge-TTS.
-* **Entrega Inicial Realizada:** `entregas/2026-11-03_AUTONOMO/` con audio de **62.69 segundos** (`LOCUCION_NOTICIERO_62S.mp3`) y desglose de 13 planos listo para pegar en Flow.
-* **Infraestructura AWS:** Script de despliegue `tools/instalar_servidor_aws.sh` y guía en `GUIA_DESPLIEGUE_AWS_AUTONOMO.md`.
+1. **Conexión y Sesión en Servidor AWS (`ubuntu@3.142.230.147`):**
+   - Sesión de Google Flow autenticada y verificada con éxito en `~/flow-profile` (`CONEXIÓN EXITOSA` comprobada con `test_flow_session.py`).
+2. **Módulos Operativos en `tools/`:**
+   - [`tools/news_radar.py`](tools/news_radar.py): Escáner RSS en tiempo real (Xataka, BBC Mundo, El País Tecnología).
+   - [`tools/pipeline_autonomo.py`](tools/pipeline_autonomo.py): Selección automática de noticia de impacto, guión de **61–65 segundos** (>60 s para monetización en TikTok), 13 prompts 3D estilizados con `fallback_prompt` anti-bloqueo y síntesis de voz neuronal (`es-MX-JorgeNeural`) con verificación automática de duración `>= 61.0 s`.
+   - [`tools/flow_generator.py`](tools/flow_generator.py): Inyector autónomo de Google Flow (Playwright Headless) con auto-curación (`SingletonLock` cleanup, cierre de popups con `Escape` x3, auto-aprobación del agente de Flow, reintento automático con `fallback_prompt` ante bloqueos de política, doble vía de descarga UI + Red y checkpointing de `SH01.mp4` a `SH13.mp4`).
+   - [`tools/ensamblador_final.py`](tools/ensamblador_final.py): Editor de vídeo algorítmico NLE para Linux sobre FFmpeg Filtergraph + ASS Vector Engine:
+     - Movimiento de cámara 24 fps (Ken Burns + vibración de cabina en planos de tensión `SH04`–`SH09`).
+     - Transiciones broadcast reales (`xfade`: `fadeblack`, `smoothleft`, `dissolve`, `circleopen`, `wipeleft`).
+     - Subtítulos Kinetic palabra por palabra (`.ass`) con pop-in elástico, resaltado automático en Amarillo/Cian y rótulo superior `🔴 ÚLTIMA HORA · NOTICIERO 3D`.
+     - Diseño sonoro multicapa (voz ecualizada + cama de tensión sintética + SFX *whooshes* en cada transición) masterizado a **`-14.8 LUFS`**.
+   - [`tools/ejecutar_todo.py`](tools/ejecutar_todo.py): Orquestador maestro de 1 solo comando (`python3 tools/ejecutar_todo.py`).
+3. **Manual de Supervisión:**
+   - Documentado en [`SUPERVISOR_SERVIDOR_AWS.md`](SUPERVISOR_SERVIDOR_AWS.md) y [`AGENTS.md`](AGENTS.md) para que tanto el usuario como cualquier agente ejecutado dentro del servidor AWS supervisen todo el flujo.
