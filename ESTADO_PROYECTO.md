@@ -2,6 +2,18 @@
 
 Actualizado: 2026-11-04.
 
+## Integración de Audio Broadcast: Gemini 3.8 Flash TTS + Epidemic Sound MCP · 2026-11-04
+
+1. **Locución Profesional con Gemini 3.8 Flash TTS:**
+   - Integrado en `tools/audio_generator.py` y `tools/pipeline_autonomo.py`.
+   - Modulación periodística dramática con auto-ajuste para asegurar siempre duración `>= 61.0s` (monetizable en TikTok Creator Rewards).
+   - Resiliencia automática con fallback a `gemini-3.8-flash-lite-tts` y `edge-tts`.
+
+2. **Música y SFX Broadcast con Epidemic Sound MCP:**
+   - Conectado con `EPIDEMIC_SOUND` hacia `https://www.epidemicsound.com/a/mcp-service/mcp`.
+   - Stems de suspense y thriller (`NEWS_THRILLER_BASS`, `NEWS_THRILLER_INSTRUMENTS`) y efectos de impacto (`SFX_RISER_LOW`, `SFX_DARK_BOOM`) descargados y cacheados en `audio_assets/`.
+   - Ensamblado NLE en `tools/ensamblador_final.py` con auto-ducking bajo la voz y masterización EBU R128 a `-14.8 LUFS`.
+
 ## Bot Propio de WhatsApp Web y Supervisión Permanente en AWS (`TIKTOK-NEWS`) · 2026-11-04
 
 1. **Bot Propio Nativo 24/7:**
