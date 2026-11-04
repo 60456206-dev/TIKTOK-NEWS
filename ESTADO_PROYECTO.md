@@ -1,8 +1,24 @@
 # Estado del Proyecto · TikTok Radar (Servidor AWS Autónomo)
 
-Actualizado: 2026-11-03.
+Actualizado: 2026-11-04.
 
-## Estado Actual: Pipeline 100% Completo y Listo para Ejecución en AWS (`TIKTOK-NEWS`)
+## Bot Propio de WhatsApp Web y Supervisión Permanente en AWS (`TIKTOK-NEWS`) · 2026-11-04
+
+1. **Bot Propio Nativo 24/7:**
+   - Desplegado en `whatsapp_bot/bot.js` bajo servicio systemd `tiktok-whatsapp-bot.service`.
+   - Conexión directa sin intermediarios mediante WhatsApp Web (`whatsapp-web.js`) en Google Chrome headless.
+   - Enlazado bidireccionalmente con el agente Antigravity (`agy --dangerously-skip-permissions`) en AWS para responder dudas y recibir comandos (`!estado`, `!generar`).
+   - Manual completo y pasos de vinculación en [`WHATSAPP_BOT_SUPERVISOR.md`](WHATSAPP_BOT_SUPERVISOR.md).
+
+2. **Primer Noticiero 3D Completado al 100% en Servidor AWS:**
+   - Entrega final: `entregas/2026-11-03_AUTONOMO/NOTICIERO_FINAL_62S.mp4` (61.2 s, 1080×1920, 24 fps, -15.0 LUFS, subtítulos Kinetic ASS).
+   - Generado íntegramente con los 13 planos de Google Flow y ensamblado en FFmpeg.
+
+3. **Estado de Servidor:**
+   - Servidor en reposo óptimo (RAM disponible ~6.6 GiB, disco al 24%).
+   - Para vincular WhatsApp: ejecutar `bash ~/TIKTOK-NEWS/whatsapp_bot/ver_qr.sh` en AWS y escanear el QR desde el celular.
+
+## Estado de Módulos Operativos en `tools/`:
 
 1. **Conexión y Sesión en Servidor AWS (`ubuntu@3.142.230.147`):**
    - Sesión de Google Flow autenticada y verificada con éxito en `~/flow-profile` (`CONEXIÓN EXITOSA` comprobada con `test_flow_session.py`).

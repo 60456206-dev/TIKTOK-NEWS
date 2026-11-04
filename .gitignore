@@ -10,3 +10,9 @@ venv/
 # Temporal files
 *.log
 .DS_Store
+
+# Node & WhatsApp Bot
+node_modules/
+package-lock.json
+qr_ascii.txt
+qr_raw.txt
