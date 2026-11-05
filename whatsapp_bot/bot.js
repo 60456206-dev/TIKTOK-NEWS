@@ -20,7 +20,7 @@ const qrcode = require('qrcode-terminal');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { exec, spawn } = require('child_process');
+const { exec, spawn, execSync } = require('child_process');
 
 const PORT = process.env.PORT || 5050;
 const AUTH_DIR = path.join(os.homedir(), '.wwebjs_auth');
@@ -83,6 +83,70 @@ function findLatestVideo() {
   return candidates[0];
 }
 
+async function sendDeliveryPackage(targetWid, deliveryDir) {
+  const vidPath = path.join(deliveryDir, 'NOTICIERO_FINAL_62S.mp4');
+  if (!fs.existsSync(vidPath)) {
+    throw new Error(`No existe el vídeo final en ${deliveryDir}`);
+  }
+
+  // 1. Asegurar portada 9:16 oficial
+  const coverPath = path.join(deliveryDir, 'PORTADA_TIKTOK_916.jpg');
+  if (!fs.existsSync(coverPath)) {
+    try {
+      execSync(`python3 tools/generador_portada.py --dir "${deliveryDir}"`, { cwd: WORKSPACE_DIR, timeout: 25000 });
+    } catch (e) {
+      console.warn('[WA-BOT] Aviso generando portada:', e.message);
+    }
+  }
+
+  // 2. Extraer metadatos y hashtags
+  let newsTitle = path.basename(deliveryDir);
+  let tiktokCaption = '';
+  let hashtags = '#tiktoknoticias #parati #fyp #ultimahora #noticiashoy';
+  const metaPath = path.join(deliveryDir, 'metadata.json');
+  if (fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+      newsTitle = meta.title || newsTitle;
+      tiktokCaption = meta.tiktok_caption || '';
+      hashtags = meta.hashtags_str || hashtags;
+    } catch (e) {}
+  }
+  const hashtagsPath = path.join(deliveryDir, 'HASHTAGS_TIKTOK.txt');
+  if (!tiktokCaption && fs.existsSync(hashtagsPath)) {
+    tiktokCaption = fs.readFileSync(hashtagsPath, 'utf8');
+  }
+
+  const stat = fs.statSync(vidPath);
+  const sizeMb = (stat.size / (1024 * 1024)).toFixed(1);
+
+  // 3. Enviar portada 9:16 primero como imagen
+  if (fs.existsSync(coverPath)) {
+    const coverMedia = MessageMedia.fromFilePath(coverPath);
+    await client.sendMessage(targetWid, coverMedia, {
+      caption: `🖼️ *PORTADA OFICIAL 9:16 (MINIATURA TIKTOK)*\n📌 *Titular:* ${newsTitle}\n📐 *Formato:* 1080x1920 (Safe Zone 3:4 centrado)\n💡 _Usa esta portada al subir tu vídeo a TikTok para maximizar clics._`
+    });
+    console.log(`[WA-BOT] 🖼️ Portada 9:16 enviada con éxito a ${targetWid}`);
+  }
+
+  // 4. Enviar vídeo final MP4 con descripción y hashtags listos para copiar
+  const videoCaption =
+    `🎬 *${newsTitle}*\n` +
+    `📦 Tamaño: ${sizeMb} MB | ⏱️ 62s (>60s Monetizable)\n\n` +
+    `📝 *TEXTO Y HASHTAGS LISTOS PARA COPIAR:*\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `${tiktokCaption || hashtags}\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n\n` +
+    `_Generado 100% de forma autónoma en tu servidor AWS._`;
+
+  const videoMedia = MessageMedia.fromFilePath(vidPath);
+  await client.sendMessage(targetWid, videoMedia, {
+    caption: videoCaption,
+    sendMediaAsDocument: false,
+  });
+  console.log(`[WA-BOT] 🎬 Vídeo enviado con éxito a ${targetWid}`);
+}
+
 function getProjectCondition() {
   const entregasDir = path.join(WORKSPACE_DIR, 'entregas');
   let newsTitle = 'Revés judicial a Google/Gemini por uso de noticias';
@@ -111,8 +175,14 @@ function getProjectCondition() {
         hasFinalVideo = true;
         finalVideoSize = (fs.statSync(finalVid).size / (1024 * 1024)).toFixed(1) + ' MB';
       }
+      const metaFile = path.join(latest.full, 'metadata.json');
       const promptFile = path.join(latest.full, 'PROMPTS_PRODUCCION.json');
-      if (fs.existsSync(promptFile)) {
+      if (fs.existsSync(metaFile)) {
+        try {
+          const data = JSON.parse(fs.readFileSync(metaFile, 'utf8'));
+          newsTitle = data.title || data.noticia?.titulo || newsTitle;
+        } catch (e) {}
+      } else if (fs.existsSync(promptFile)) {
         try {
           const data = JSON.parse(fs.readFileSync(promptFile, 'utf8'));
           newsTitle = data.noticia?.titulo || data.tema || newsTitle;
@@ -128,7 +198,7 @@ function getProjectCondition() {
         `📊 *CONDICIÓN DEL PROYECTO (TIKTOK RADAR 3D)*\n\n` +
         `• *Última Entrega:* \`${dateFolder}\`\n` +
         `• *Noticia del Día:* _${newsTitle}_\n` +
-        `• *Planos 3D en Flow:* ${totalShots}/13 planos producidos.\n` +
+        `• *Arquitectura Híbrida:* ${totalShots}/8 planos Flow cinemáticos + 5 infográficos FFmpeg Vector HUD.\n` +
         `• *Vídeo Final (62s):* ${hasFinalVideo ? `✅ ENSAMBLADO Y LISTO (${finalVideoSize})` : '⏳ Pendiente de ensamblaje'}\n` +
         `• *Pipeline en Ejecución:* ${isRunning ? '🚀 ACTIVO EN ESTE MOMENTO' : '💤 En reposo (Listo para generar)'}\n` +
         `• *Estándar:* >60 s vertical 9:16 (Monetizable en TikTok Creator Rewards).\n\n` +
@@ -285,7 +355,7 @@ client.on('message_create', async (msg) => {
 
   const lower = body.toLowerCase();
 
-  // COMANDO 1: ENVIAR VÍDEO (!video / video / mandame el video)
+  // COMANDO 1: ENVIAR VÍDEO CON PORTADA Y HASHTAGS (!video / video / mandame el video)
   if (
     lower === '!video' ||
     lower === 'video' ||
@@ -299,18 +369,14 @@ client.on('message_create', async (msg) => {
       await msg.reply('🤖 Aún no hay vídeos en `entregas/`. Escribe *!generar* para producir uno.');
       return;
     }
+    const deliveryDir = path.dirname(vid.path);
     const sizeMb = (vid.size / (1024 * 1024)).toFixed(1);
-    await msg.reply(`🤖 📤 *Preparando envío del vídeo:* \`${vid.name}\` (${sizeMb} MB)... Un momento.`);
+    await msg.reply(`🤖 📤 *Preparando paquete completo para TikTok:* Portada 9:16 + Vídeo (${sizeMb} MB) + Hashtags...`);
     try {
-      const media = MessageMedia.fromFilePath(vid.path);
-      await client.sendMessage(targetChat, media, {
-        caption: `🎬 *${vid.name}*\n📦 Tamaño: ${sizeMb} MB\n⏱️ Noticiero vertical de última hora (>60s) producido en AWS.`,
-        sendMediaAsDocument: false,
-      });
-      console.log(`[WA-BOT] 📤 Vídeo enviado con éxito a +${senderNumber}`);
+      await sendDeliveryPackage(targetChat, deliveryDir);
     } catch (e) {
-      console.error('[WA-BOT] Error enviando vídeo:', e.message);
-      await msg.reply(`🤖 ⚠️ Error enviando archivo de vídeo: ${e.message}`);
+      console.error('[WA-BOT] Error enviando paquete:', e.message);
+      await msg.reply(`🤖 ⚠️ Error enviando paquete: ${e.message}`);
     }
     return;
   }
@@ -360,7 +426,7 @@ client.on('message_create', async (msg) => {
     return;
   }
 
-  // COMANDO 5: INICIAR PRODUCCIÓN (!generar / !generar todos / !generar 1..4)
+  // COMANDO 5: INICIAR PRODUCCIÓN (!generar / !generar todos / !generar 1..4 / !generar 5 g3)
   if (
     lower.startsWith('!generar') ||
     lower.includes('generar noticiero') ||
@@ -369,20 +435,32 @@ client.on('message_create', async (msg) => {
     let args = ['tools/ejecutar_todo.py'];
     let modeText = 'los 4 géneros diarios (Aviación, Ciberataques, IA, Espacio)';
 
-    if (lower.includes(' 1') || lower.includes('aviacion') || lower.includes('catastrofe')) {
+    const countMatch = lower.match(/(\d+)\s*(?:videos?|noticias?)/) || lower.match(/!generar\s+(\d+)/);
+    let count = 1;
+    if (countMatch) {
+      const parsed = parseInt(countMatch[1]);
+      if (parsed >= 1 && parsed <= 10) count = parsed;
+    }
+
+    if (/\b(g1|aviacion|aviación|catastrofe|catástrofe|peru|perú)\b/.test(lower)) {
       args.push('--genre', 'G1');
-      modeText = 'Género 1 (🚨 Aviación & Catástrofes)';
-    } else if (lower.includes(' 2') || lower.includes('ciber') || lower.includes('hacker')) {
+      modeText = `Género 1 (🚨 Aviación & Desastres Perú/Mundo)`;
+    } else if (/\b(g2|ciber|ciberataque|hacker)\b/.test(lower)) {
       args.push('--genre', 'G2');
-      modeText = 'Género 2 (💻 Ciberataques & Amenazas)';
-    } else if (lower.includes(' 3') || lower.includes('ia') || lower.includes('tech') || lower.includes('robot')) {
+      modeText = `Género 2 (💻 Ciberataques & Amenazas)`;
+    } else if (/\b(g3|ia|ai|tech|robot|chip|chips|hardware)\b/.test(lower)) {
       args.push('--genre', 'G3');
-      modeText = 'Género 3 (🤖 Inteligencia Artificial & Tech)';
-    } else if (lower.includes(' 4') || lower.includes('espacio') || lower.includes('ciencia')) {
+      modeText = `Género 3 (🤖 IA, Chips & Hardware TechCrunch/Tom's)`;
+    } else if (/\b(g4|espacio|nasa|ciencia)\b/.test(lower)) {
       args.push('--genre', 'G4');
-      modeText = 'Género 4 (🚀 Espacio & Ciencia Extrema)';
+      modeText = `Género 4 (🚀 Espacio & Ciencia Extrema)`;
     } else {
       args.push('--all');
+    }
+
+    if (count > 1 && args.includes('--genre')) {
+      args.push('--count', count.toString());
+      modeText += ` [Lote de ${count} vídeos ordenados por cronología y polémica]`;
     }
 
     await msg.reply(`🤖 🚀 *Iniciando producción autónoma en AWS...*\n🎯 *Objetivo:* ${modeText}.\n_No te preocupes por nada, el servidor trabaja solo mientras estás en clases y te entregará los vídeos aquí._`);
@@ -426,13 +504,17 @@ client.on('message_create', async (msg) => {
   const fullCmd = `cd ${WORKSPACE_DIR} && ${agyCmd} --dangerously-skip-permissions -p ${JSON.stringify(prompt)}`;
 
   exec(fullCmd, { maxBuffer: 1024 * 1024 * 5, timeout: 120000 }, async (err, stdout, stderr) => {
-    if (err) {
-      const errOut = (stderr || err.message || '').slice(-250);
-      await msg.reply(`🤖 ⚠️ Error ejecutando agente en AWS:\n${errOut}`);
-      return;
+    try {
+      if (err) {
+        const errOut = (stderr || err.message || '').slice(-250);
+        await client.sendMessage(targetChat, `🤖 ⚠️ Error ejecutando agente en AWS:\n${errOut}`);
+        return;
+      }
+      const cleanOutput = stdout.trim() || 'El agente completó la consulta sin texto de salida.';
+      await client.sendMessage(targetChat, `🤖 *Antigravity AWS:*\n\n${cleanOutput}`);
+    } catch (sendErr) {
+      console.error('[WA-BOT] Error enviando respuesta de agy por WhatsApp:', sendErr.message);
     }
-    const cleanOutput = stdout.trim() || 'El agente completó la consulta sin texto de salida.';
-    await msg.reply(`🤖 *Antigravity AWS:*\n\n${cleanOutput}`);
   });
 });
 
@@ -482,6 +564,34 @@ app.post('/send', async (req, res) => {
     return res.json({ success: true, target: targetWid });
   } catch (err) {
     console.error('[WA-BOT] Error al enviar mensaje:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/send-delivery', async (req, res) => {
+  if (!isReady) {
+    return res.status(503).json({ error: 'WhatsApp bot aún no está listo o autenticado.' });
+  }
+
+  loadOwner();
+  const { deliveryDir, phone } = req.body;
+  const targetWid = phone
+    ? `${phone.replace(/[^\d]/g, '')}@c.us`
+    : ownerWid;
+
+  if (!targetWid) {
+    return res.status(400).json({ error: 'No se especificó número y no hay dueño registrado.' });
+  }
+
+  try {
+    const dir = deliveryDir || (findLatestVideo() ? path.dirname(findLatestVideo().path) : null);
+    if (!dir || !fs.existsSync(dir)) {
+      return res.status(404).json({ error: 'Carpeta de entrega no encontrada.' });
+    }
+    await sendDeliveryPackage(targetWid, dir);
+    return res.json({ success: true, target: targetWid, deliveryDir: dir });
+  } catch (err) {
+    console.error('[WA-BOT] Error en /send-delivery:', err);
     return res.status(500).json({ error: err.message });
   }
 });
