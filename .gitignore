@@ -16,3 +16,4 @@ node_modules/
 package-lock.json
 qr_ascii.txt
 qr_raw.txt
+audio_assets/
