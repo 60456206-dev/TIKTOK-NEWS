@@ -1,6 +1,134 @@
 # Dónde nos quedamos
 
-Actualizado: 2026-11-05.
+Actualizado: 2026-11-11.
+
+## Refinamiento Integral y Entrega Directa sin Validación Previa · 2026-11-11
+
+- **Pacto y Decisión del Usuario**:
+  1. **Fin de la Validación Previa por WhatsApp**: Se anula el requerimiento de enviar fichas de propuesta ni pedir confirmación previa antes de renderizar. El pipeline opera de forma 100% directa y autónoma, manteniendo como **único punto de contacto en WhatsApp la entrega final del paquete completo** (vídeo MP4 + portada 9:16 + bloque de hashtags) para que el usuario lo revise y suba.
+  2. **Refuerzo de Fuentes RSS en Radar ([`news_radar.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/news_radar.py))**:
+     - *Aviación Internacional (G1):* Integrados **Flightradar24 Blog** y **Aviation24**, garantizando un flujo continuo de reportes de vuelo y primicias Mayday.
+     - *Espacio y Ciencia (G4):* Reemplazado el enlace caído de ESA (404) por **SpaceNews** y **Space.com**, eliminando errores en logs.
+  3. **Robustez de Guiones Veritasium ([`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py))**:
+     - Calibrado orden de modelos ultrarrápidos con fallback garantizado (`gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.5-flash`) y gestión de pausas para evitar timeouts.
+  4. **Modernización de Placas Gráficas Broadcast FFmpeg ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py))**:
+     - Implementada animación elástica de entrada (*cubic easing* `ease_y`), tarjeta oscura traslúcida con borde de neón, código de tiempo SMPTE (`timecode`), escáner animado de telemetría y micrograno analógico cinematográfico (`noise/vignette`).
+  5. **Sincronización Exclusiva hacia AWS**: Sincronización de los cambios únicamente hacia el repositorio de AWS (`tiktok_remote` en `TIKTOK-NEWS.git`).
+
+## Eliminación Total de Desastres y Enfoque Exclusivo en Aviación Internacional (G1) · 2026-11-11
+
+- **Instrucción Directa del Usuario**:
+  - Eliminar completamente el apartado de Desastres Naturales (Perú / INDECI / sismos / inundaciones).
+  - Conservar y consolidar la categoría **G1 como 100% Aviación Internacional** (incidentes de vuelo, emergencias Mayday, investigaciones de seguridad aérea NTSB/FAA y telemetría de cabina).
+
+- **Ajustes Realizados y Verificados**:
+  1. [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json):
+     - Slot 1 redefinido exclusivamente como `G1_AVIACION` (01:00 PM Perú / Almuerzo).
+     - Eliminadas anclas visuales y pistas sonoras de `G1_PERU_DESASTRES`.
+  2. [`news_radar.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/news_radar.py):
+     - Eliminados feeds locales generales (`rpp_peru`, `elcomercio_peru`, `andina_peru`) y reglas de prioridad nacional (+60 pts).
+     - G1 filtrado de forma estricta hacia incidentes de aviación global (AeroTime y fuentes internacionales de aviación).
+  3. [`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py):
+     - Catálogo de stems de audio unificado en `G1_AVIACION` (`Trace - Lennon Hutton`, 156 BPM).
+  4. [`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py):
+     - Eliminadas las placas HUD de INDECI / COEN / sismos. Los gráficos vectoriales de G1 corresponden exclusivamente a telemetría de vuelo, altímetro numérico y grabadora de datos (caja negra FDR/CVR).
+  5. [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py):
+     - Portadas de G1 configuradas con badge `EMERGENCIA AEREA EN VIVO`, titular táctico de radar y hashtags de aviación internacional.
+  6. [`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py) y [`ejecutar_todo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ejecutar_todo.py):
+     - Eliminadas ramas de desastres; G1 y `SLOT_1` generan directamente el paquete cinemático de aviación.
+  7. [`bot.js`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/whatsapp_bot/bot.js) y [`crontab_2videos_peru.tab`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/crontab_2videos_peru.tab):
+     - Actualizadas etiquetas y descripción de G1 a `✈️ Aviación Internacional & Seguridad Aérea`.
+
+## Nueva Dirección Estratégica: Exactamente 2 Vídeos / Día · Estándar Veritasium (Opción B: Slots Especializados) · 2026-11-11
+
+- **Pacto y Decisión del Usuario**:
+  1. **Cadencia fija de 2 vídeos diarios especializados**: Se descarta definitivamente la producción masiva para enfocar el 100% de recursos y créditos en **2 obras maestras diarias** de divulgación científica y noticias de impacto global con estructura y estética Veritasium.
+  2. **Estructura de Slots Especializados (Opción B Aceptada)**:
+     - ☀️ **Slot 1 · Almuerzo (Subida TikTok: 01:00 PM Perú / Servidor 12:10 PM / 17:10 UTC)**:
+       - *Especialización:* **G1 Aviación Internacional** (Incidentes Mayday, emergencias de cabina, investigaciones NTSB/FAA y fallas técnicas de vuelo).
+       - *Enfoque Veritasium:* Reconstrucción técnica de la falla de vuelo, deconstrucción por primeros principios y lecciones de seguridad/resiliencia de cabina.
+     - 🌙 **Slot 2 · Prime Time Noche (Subida TikTok: 08:30 PM Perú / Servidor 07:40 PM / 00:40 UTC)**:
+       - *Especialización:* **Frontera Tecnológica y Científica Veritasium** (El mejor tema entre **G3:** Chips 2nm, Litografía EUV & Modelos Frontera de IA; **G2:** Ciberataques de Día Cero y Guerra Digital; o **G4:** Espacio Profundo y Fenómenos Anómalos).
+       - *Enfoque Veritasium:* Paradoja de ingeniería imposible, stakes multimillonarios o civilizatorios, analogía física cotidiana y resolución magistral.
+  3. **Referencias de Dirección Oficializadas**:
+     - **Narrativa y Estructura Explicativa:** [Veritasium - *«El Gráfico Más Aterrador de la Ingeniería Eléctrica»*](https://www.youtube.com/watch?v=Ga5rvLLeLHw) *(Carta de Smith)*.
+       - *Fórmula por Primeros Principios:* Gancho paradójico inicial (0-10s) -> Peligro real y apuestas críticas con cifras (10-25s) -> Deconstrucción capa por capa con analogía física cotidiana (25-45s) -> Solución técnica maestra (45-55s) -> Cierre filosófico monumental sobre el ingenio humano y la sociedad (55-62s). Cero muletillas cliché ("deja tus comentarios").
+     - **Estilo Visual y Dirección de Arte:** [Veritasium - *«The Man Who Accidentally Killed The Most People In History»*](https://www.youtube.com/watch?v=IV3dnLzthDA) *(Thomas Midgley Jr. / animado por Jakub Misiek y Fabio Albertelli)*.
+       - *Párpado Chiaroscuro y Texturas Táctiles:* Iluminación de estudio en claroscuro, fondos en sombras carbón (`0x12161a`) con viñeteado profundo, luces directas de recorte (*rim light*), texturas de pátina industrial y grano analógico sutil (eliminación total del efecto plástico/artificial de IA), acentos de alerta en amarillo azufre (`0xe2e062`), ámbar y rojo editorial, empuje lento y continuo de cámara (*slow cinematic push-in*) y diagramas técnicos vectoriales limpios que se animan con precisión quirúrgica.
+  4. **Módulos Actualizados y Verificados**:
+     - [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json): Declarados `videos_por_dia: 2`, estrategia Opción B y anclas Chiaroscuro táctiles.
+     - [`crontab_2videos_peru.tab`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/crontab_2videos_peru.tab): Creado cronograma optimizado con disparadores `SLOT_1` (17:10 UTC) y `SLOT_2` (00:40 UTC).
+     - [`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py): Selector autónomo `SLOT_1` y `SLOT_2` integrado, guion Veritasium y prompts cinematográficos.
+     - [`ejecutar_todo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ejecutar_todo.py): Añadido soporte para `SLOT_1`, `SLOT_2`, `TECH`, `CIENCIA` y `AUTO`.
+     - [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py): Portadas 9:16 adaptadas al estilo de póster documental Veritasium / Jakub Misiek.
+
+- **Instrucción Directa del Usuario**:
+  1. **Fin de las 6 publicaciones diarias**: Cambiar la producción masiva de 6 vídeos al día por **1 solo vídeo diario (o bajo demanda), pero espectacularmente producido** con estándar de obra maestra (10/10).
+  2. **Conservación de las 4 Categorías Clave**:
+     - 🚨 **G1**: Desastres Perú (prioridad nacional) / Aviación Internacional.
+     - 💻 **G2**: Ciberataques, Guerra Digital y Amenazas Críticas.
+     - 🤖 **G3**: Inteligencia Artificial, Hardware y Chips 2nm.
+     - 🚀 **G4**: Espacio, Ciencia Extrema y Fenómenos Anómalos.
+  3. **Paso Previo Obligatorio por WhatsApp**: Antes de iniciar cualquier generación o renderizado pesado, el radar redacta una **Ficha de Propuesta** (titular gancho, hechos clave, estructura de 62s y ángulo visual) y la envía a WhatsApp (+51902893413) para revisión y aprobación previa del usuario.
+  4. **Explotación Total del Motor Gráfico de FFmpeg**:
+     - Retirar definitivamente las placas planas con cuadrículas toscas y cajas estáticas (`drawbox` básico).
+     - Implementar diseño en movimiento de nivel broadcast: fondos dinámicos procedurales (partículas/bokeh, gradientes cinemáticos), *True Frosted Glass* con desenfoque gaussiano de fondo (`gblur`), animaciones de entrada con aceleración elástica (`cubic easing`), espectrograma de audio vivo reactivo a las frecuencias de Epidemic Sound (`showfreqs`/`showwaves`), código de tiempo SMPTE, y aberración cromática óptica (`rgbashift`).
+
+## Estado Actual: Fábrica Autónoma Pausada por Instrucción del Usuario · 2026-11-05
+
+- **Pausa Total de Producción Programada**:
+  - **Crontab desactivado:** Se eliminaron las tareas programadas de `cron` en el servidor AWS (`ubuntu@3.142.230.147`) para detener cualquier generación automática de vídeos y preservar los **2 puntos restantes de Google Flow**.
+  - **Copia de respaldo guardada:** El cronograma completo de 6 vídeos diarios quedó respaldado en `~/crontab_activo.backup.tab` en AWS para poder reactivarlo en un solo clic (`crontab ~/crontab_activo.backup.tab`) cuando el usuario lo disponga.
+  - **Sin procesos activos:** Verificado que no hay procesos de renderizado ni navegadores huérfanos consumiendo CPU ni puntos.
+  - **Bot de WhatsApp en reposo:** El servicio `tiktok-whatsapp-bot.service` permanece activo únicamente para responder consultas del usuario (`!estado`) sin disparar producciones automáticas.
+
+## Resolución de Vídeos Bugeados, Blindaje Anti-Cuota Flow y Corrección FFmpeg · 2026-11-05
+
+- **Diagnóstico Integral y Corrección de Vídeos Bugeados / Congelados**:
+  1. **Auto-Fallback Dinámico ante Límite de Cuota en Google Flow (`Omni 1.1 Flash` -> `Veo 3.1 - Lite`)**:
+     - *Causa Raíz:* En [`tools/flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py), se forzaba textualmente `"Generate a video directly using Omni 1.1 Flash..."`. Al superar la cuota diaria en Google Flow, el asistente respondía en el chat indicando el agotamiento del modelo y sugiriendo cambiar a `Veo 3.1 - Lite`. Como el bot no interpretaba el mensaje, daba timeout en cada plano (48s x 3 intentos) y los planos faltantes se rellenaban con placas estáticas de respaldo FFmpeg (pantallas negras con recuadro `TELEMETRIA EN VIVO`).
+     - *Solución:* Implementada detección proactiva de mensajes de cuota (`quota limit`, `daily quota`, `switch to another model`). Cuando se detecta límite en `Omni 1.1 Flash`, el script conmuta automáticamente a `Veo 3.1 - Lite` y dispara los eventos de Angular para activar el botón de generación sin quedarse congelado.
+  2. **Eliminación Definitiva del Crash de FFmpeg (Error 234 en Ciberataques)**:
+     - *Causa Raíz:* En [`tools/ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py), cadenas como `"TASA DE PAQUETES: 14.8 MILLONES PPS (CRÍTICO)"` contenían dos puntos (`:`) sin escapar, lo que provocaba que FFmpeg tratara el texto posterior como una opción de filtro inválida y abortara el renderizado con error 234.
+     - *Solución:* Creada la función [`escape_ffmpeg_drawtext`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py#L253-L263), que escapa de manera robusta dos puntos (`\:`) y reemplaza apóstrofes conflictivos (`’`), protegiendo métricas, títulos y viñetas. Verificado exitosamente con el máster de `2026-11-05_CIBERATAQUES_HACKERS` completado a 62.0s y -14.1 LUFS.
+  3. **Corrección de Solapamiento Visual en Top Badge y Subtítulos**:
+     - *Causa Raíz:* La insignia ASS `🔴 ÚLTIMA HORA` y el ticket frosted glass `[✓ FUENTE VERIFICADA]` coincidían en Y=200-260, montando las letras unas sobre otras. Además, el pie de las tarjetas HUD a Y=1420 chocaba contra los subtítulos inferiores en Y=1480.
+     - *Solución:* Retirado el estilo duplicado `HookSource` de los subtítulos ASS. Ubicada la píldora `🔴 ÚLTIMA HORA` en `MarginV=95` (Y=95-145) y la tarjeta de fuente verificada en `Y=175-350`. Reducida la altura de la tarjeta HUD a 860px (terminando en Y=1230), dejando 250px de espacio limpio hacia los subtítulos inferiores en TikTok Safe Zone. Inspeccionado visualmente en fotogramas extraídos.
+  4. **Eliminación del Efecto de Voz Ralentizada / Robótica (`atempo`)**:
+     - *Causa Raíz:* En [`tools/pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py), si la locución duraba ~51s, se aplicaba un factor `atempo=0.825` (ralentizando casi un 18%), deformando el timbre vocal.
+     - *Solución:* Calibrado el generador de guiones a 145-160 palabras obligatorias y acotado el factor a `max(0.94, dur / 61.5)` (máximo 6% de ajuste), asegurando que el locutor mantenga 100% de naturalidad y adrenalina sin arrastrar palabras.
+  5. **Desambiguación de Carpetas en G1 (`PERU_DESASTRES` vs `AVIACION`)**:
+     - En [`tools/pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py), el nombre de entrega se deriva del `genre_canonical` real (`G1_PERU_DESASTRES` -> `PERU_DESASTRES`), evitando que las emergencias climáticas se guarden bajo carpetas de aviación.
+  6. **Sincronización Total Verificada en AWS**:
+     - Archivos probados y sincronizados en local y en `~/TIKTOK-NEWS` en el servidor AWS. Máster de Ciberataques auditado visualmente y validado.
+
+## Resolución de Observaciones Críticas de Producción y Blindaje de Flow · 2026-11-05
+
+- **Corrección Integral de Observaciones del Usuario (Calidad, Audio, Generación Flow y Estética)**:
+  1. **Eliminación del Bucle Infinito en Google Flow**:
+     - *Causa Raíz:* En [`tools/flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py), la línea 455 permitía que si transcurrían 25s sin nuevo tile (`len(states) >= len(before_states)` con `len(states) == len(before_states)`), se descargara automáticamente el tile `idx=0` (que contenía un vídeo antiguo de una nave/instituto). Como resultado, los 8 planos descargaban el mismo archivo repetido (MD5 idéntico).
+     - *Solución:* Eliminado el fallback a tile viejo. Ahora se exige estrictamente que el conteo de tiles se haya incrementado (`len(states) > before_count`) y que el tile nuevo esté completamente listo y sin generar (`states[0]["isReady"] and not states[0]["isGenerating"]`). Si en 45s no se inicia la generación, el script aborta sin descargar basura y activa reintento limpio con `fallback_prompt`.
+     - *Limpieza Proactiva de Hilo:* Implementado reinicio de sesión limpia (`Iniciar sesión nueva`) en Google Flow al iniciar cada tanda de generación, evitando arrastrar decenas de tiles previos. Inyectada evasión stealth para anular `navigator.webdriver`.
+  2. **Animación FFmpeg Opcional y Modo Flow Primario**:
+     - En [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json), el modo activo cambió a `"flow_primario"` y el HUD vectorial FFmpeg se declaró `"obligatorio_en_cada_video": false`.
+     - La generación de Flow tiene prioridad visual completa en el metraje sin forzar planos de telemetría repetitivos ni cuadrículas azules/amarillas invasivas. Los gráficos FFmpeg quedan reservados únicamente para puntos de datos reales cuando aporten claridad.
+  3. **Rebalanceo Acústico de Música de Fondo (+6 dB de Pegada)**:
+     - En [`tools/ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py), el compresor sidechain se ajustó a `threshold=0.25:ratio=2.0:attack=15:release=220` y los stems de Epidemic Sound subieron de `0.55/0.48` a `0.85/0.75`.
+     - La música ahora se escucha potente, rítmica y nítida en teléfonos móviles (-22.8 dB promedio bajo la voz, -14.0 LUFS integrado en máster) sin ahogar al locutor.
+  4. **Insignia Broadcast de Fuente / Foro Verificado (Aumento de Fiabilidad)**:
+     - Creada la función [`generate_verified_source_card`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py#L197-L253), que genera un ticket gráfico de alta credibilidad (overlay en `t=1.0s` a `6.5s`) con píldora `[✓ FUENTE VERIFICADA]`, nombre destacado de la fuente (RPP, NASA, Tom's Hardware, etc.) y leyenda de auditoría informativa en tiempo real en diseño frosted glass.
+  5. **Filtro de Noticias por Impacto Emocional y Humano Universal**:
+     - En [`tools/news_radar.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/news_radar.py), se implementó `UNIVERSAL_HUMAN_IMPACT_BOOSTS` (+15 a +22 pts) para hitos que impactan el rumbo de la humanidad, y `NICHE_TECHNICAL_PENALTIES` (-25 pts) para filtrado de contratos rutinarios o pruebas de plataformas experimentales de nicho.
+     - Integrado re-ranking semántico con Gemini 3.5 Flash Lite (`rerank_by_human_impact_gemini`).
+  6. **Prohibición Total de "Deja tus comentarios"**:
+     - Erradicada la frase y cualquier variación cliché ("comenta abajo", "déjamelo en los comentarios") de guiones, storyboards, tarjetas SH13, captions de TikTok y portadas. Reemplazado por reflexiones periodísticas abiertas de alto impacto.
+  7. **Paleta Visual Broadcast Refinada (Fin del Azul Neón "Muy de IA")**:
+     - Retirado el cian eléctrico estridente (`#00e5ff`) en vídeos y portadas. Sustituido por paletas ricas y de emisión profesional: Ámbar alerta (`#ffa726`), Oro tecnológico (`#ffd166`), Rojo editorial (`#e63946`) y Titanio (`#f8f9fa`).
+  8. **Inspección Visual de Artefactos Cumplida**:
+     - Portada verificada visualmente: titulares grandes en español, diseño 3:4 seguro para TikTok y paleta cálida cinematográfica.
+     - Insignia de fuente verificada auditada y corregida a 3 niveles verticales sin colisión de texto.
+  9. **Sincronización Total en Servidor AWS**:
+     - Ambos repositorios sincronizados (`PRUEBA-CLI` en commit `576f7d4` y `TIKTOK-NEWS` en AWS en commit `aa1b465`).
 
 ## Blindaje Antifallas y Persistencia Continua del Agente WhatsApp en AWS · 2026-11-05
 

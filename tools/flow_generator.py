@@ -32,6 +32,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 ENTREGAS_DIR = ROOT_DIR / "entregas"
 PROFILE_DIR = Path(os.path.expanduser("~/flow-profile"))
 FLOW_URL = "https://labs.google/fx/es/tools/flow"
+ACTIVE_VIDEO_MODEL = "Omni 1.1 Flash"
 
 
 def log(msg: str) -> None:
@@ -125,18 +126,25 @@ async def ensure_inside_flow_project(page: Page) -> bool:
             log(f"Navegando hacia editor de proyecto Flow (intento {attempt}/3)...")
             await dismiss_stray_popups(page)
 
-            # Buscar primero un proyecto existente (/project/) para reutilizar ajustes 9:16 + x1
+            # Prioridad 1: Botón Start Creating / Comenzar
+            # Prioridad 2: Enlace a un proyecto existente (/project/)
+            # Prioridad 3: Botón Nuevo Proyecto
             clicked = await page.evaluate("""() => {
-                // Prioridad 1: Enlace a un proyecto existente (/project/)
+                for (const b of document.querySelectorAll('button')) {
+                    const txt = (b.innerText || '').trim().toLowerCase();
+                    if (txt === 'start creating' || txt === 'comenzar' || txt === 'crear con flow') {
+                        b.click();
+                        return 'start_creating';
+                    }
+                }
                 for (const a of document.querySelectorAll('a[href*="/project/"]')) {
                     a.click();
                     return 'existing_project';
                 }
-                // Prioridad 2: Botón de Nuevo Proyecto / New Project
                 const buttons = Array.from(document.querySelectorAll('button, a'));
                 for (const b of buttons) {
                     const t = (b.innerText || b.getAttribute('aria-label') || '').toLowerCase();
-                    if (t.includes('nuevo proyecto') || t.includes('new project') || t.includes('crear con flow') || t.includes('create with flow')) {
+                    if (t.includes('nuevo proyecto') || t.includes('new project') || t.includes('crear con flow')) {
                         b.click();
                         return 'new_project:' + t;
                     }
@@ -271,24 +279,51 @@ async def submit_prompt_to_flow(page: Page, prompt_text: str) -> bool:
             return False
         box = page.locator('div[role="textbox"], textarea').first
 
-    # Prefijo explícito para que el agente de Flow use siempre Omni 1.1 Flash (Vídeo) y nunca Nano Banana (Imagen)
-    video_directive = "Generate a video directly using Omni 1.1 Flash (text-to-video, do NOT generate images with Nano Banana): "
-    full_prompt = prompt_text if "Omni 1.1 Flash" in prompt_text else (video_directive + prompt_text)
+    global ACTIVE_VIDEO_MODEL
+    # Prefijo explícito según modelo activo (Omni 1.1 Flash o fallback a Veo 3.1 - Lite si hay límite de cuota)
+    if ACTIVE_VIDEO_MODEL == "Veo 3.1 - Lite":
+        video_directive = "Generate a video directly using Veo 3.1 - Lite (text-to-video, do NOT generate images): "
+    else:
+        video_directive = "Generate a video directly using Omni 1.1 Flash (text-to-video, do NOT generate images with Nano Banana): "
+
+    full_prompt = prompt_text if ("Omni 1.1 Flash" in prompt_text or "Veo 3.1" in prompt_text) else (video_directive + prompt_text)
 
     try:
         await box.click(force=True, timeout=5000)
         await asyncio.sleep(0.3)
         await box.fill(full_prompt)
-        await asyncio.sleep(0.7)
+        await asyncio.sleep(0.5)
+
+        # Disparar eventos nativos para que el botón de generación de Angular se active sin demoras
+        await box.evaluate("""el => {
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+        }""")
+        await asyncio.sleep(0.5)
 
         gen_btn = page.locator(
+            'button.generate-icon-button, '
+            'button[type="submit"], '
             'button[aria-label="Iniciar generación"], '
             'button[aria-label*="generación"], '
             'button[aria-label*="Generate"], '
             'button[aria-label*="Enviar"]'
         ).first
 
-        if await gen_btn.count() > 0:
+        # Si el botón sigue deshabilitado en Angular, forzar disparo de eventos input y change
+        try:
+            if await gen_btn.count() > 0:
+                is_disabled = await gen_btn.evaluate("el => el.disabled || el.classList.contains('mat-mdc-button-disabled')")
+                if is_disabled:
+                    await box.evaluate("""el => {
+                        el.dispatchEvent(new Event('input', { bubbles: true }));
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    }""")
+                    await asyncio.sleep(0.5)
+        except Exception:
+            pass
+
+        if await gen_btn.count() > 0 and not await gen_btn.evaluate("el => el.disabled"):
             await gen_btn.click(force=True)
         else:
             await page.keyboard.press("Enter")
@@ -404,7 +439,7 @@ async def generate_single_shot(
 
         # Contar tiles listos antes de enviar
         before_states = await get_tile_states(page)
-        ready_indices_before = {t["idx"] for t in before_states if t["isReady"]}
+        before_count = len(before_states)
         captured_urls.clear()
 
         ok_submit = await submit_prompt_to_flow(page, use_prompt)
@@ -422,39 +457,67 @@ async def generate_single_shot(
         start_t = time.time()
         target_ready_idx: Optional[int] = None
         policy_failed = False
+        has_started_generating = False
 
         while time.time() - start_t < 240:
-            await asyncio.sleep(5)
+            await asyncio.sleep(4)
             await auto_approve_if_prompted(page)
             states = await get_tile_states(page)
 
-            # Verificar si hay un nuevo tile listo (en Flow el nuevo suele insertarse en idx 0)
-            new_ready = [
-                t for t in states
-                if t["isReady"] and (t["idx"] == 0 or len(states) > len(before_states) or t["idx"] not in ready_indices_before)
-            ]
-            # Pero asegurémonos de que si idx 0 ya estaba antes y el conteo no cambió, esperemos a que termine de generar
             generating_tiles = [t for t in states if t["isGenerating"]]
             error_tiles = [t for t in states[:2] if t["isError"]]
 
+            # Detección proactiva de cuota agotada o mensajes de actividad inusual en el chat
+            global ACTIVE_VIDEO_MODEL
+            chat_status = await page.evaluate("""() => {
+                const bodyText = (document.body ? document.body.innerText : '').toLowerCase();
+                if (bodyText.includes('quota limit') || bodyText.includes('daily quota') || 
+                    bodyText.includes('reached your daily') || bodyText.includes('alternative like veo') ||
+                    bodyText.includes('switch to another model, such as veo')) {
+                    return 'quota_limit';
+                }
+                if (bodyText.includes('actividad inusual')) {
+                    return 'unusual_activity';
+                }
+                return null;
+            }""")
+
+            if chat_status == 'quota_limit' and ACTIVE_VIDEO_MODEL != "Veo 3.1 - Lite":
+                log(f"⚠️ Detectado límite de cuota diaria en Omni 1.1 Flash. Conmutando modelo activo a Veo 3.1 - Lite...")
+                ACTIVE_VIDEO_MODEL = "Veo 3.1 - Lite"
+                break
+            elif chat_status == 'unusual_activity':
+                log("⚠️ Advertencia de actividad inusual detectada en Flow. Pulsando Reintentar y aplicando espera preventiva...")
+                await page.evaluate("""() => {
+                    for (const b of document.querySelectorAll('button')) {
+                        if ((b.innerText||'').toLowerCase().includes('reintentar')) b.click();
+                    }
+                }""")
+                await asyncio.sleep(5)
+
             if error_tiles and not generating_tiles:
-                log(f"⚠️ Detectado error/bloqueo en tile de Flow: {error_tiles[0]['preview']}")
+                log(f"⚠️ Detectado error/bloqueo en tile de Flow para {shot_id}: {error_tiles[0]['preview']}")
                 policy_failed = True
                 break
 
-            if len(states) > len(before_states):
-                # Se añadió un nuevo tile; esperamos a que el primer tile nuevo esté isReady
-                if states[0]["isReady"]:
+            if generating_tiles or len(states) > before_count:
+                has_started_generating = True
+
+            # Un tile generado solo se considera listo si es estrictamente NUEVO
+            # (el conteo aumentó a > before_count) y ya no está en progreso
+            if len(states) > before_count:
+                if states[0]["isReady"] and not states[0]["isGenerating"]:
                     target_ready_idx = 0
                     break
 
             elapsed = int(time.time() - start_t)
             if generating_tiles:
-                if elapsed % 15 == 0:
+                if elapsed % 12 == 0:
                     log(f"   {shot_id} renderizando en Google Flow ({elapsed}s)... {generating_tiles[0]['preview'][:60]}")
-            elif elapsed > 25 and states and states[0]["isReady"] and len(states) >= len(before_states):
-                # Si ya pasaron >25s, no hay ningún tile generando y el tile 0 está listo
-                target_ready_idx = 0
+            elif not has_started_generating and elapsed > 45:
+                # Si pasaron >45s y jamás se detectó un nuevo tile ni estado de generación,
+                # el envío falló o fue ignorado. NUNCA tomar tile 0 viejo.
+                log(f"⚠️ {shot_id}: No se detectó inicio de renderizado en Flow tras {elapsed}s (posible bloqueo o prompt no enviado).")
                 break
 
         if policy_failed or target_ready_idx is None:
@@ -530,6 +593,18 @@ async def run_flow_generator(delivery_dir: Path, max_shots: int = 13) -> bool:
             ],
         )
 
+        await context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+            window.chrome = {
+                runtime: {},
+                loadTimes: function() {},
+                csi: function() {},
+                app: {}
+            };
+        """)
+
         page = context.pages[0] if context.pages else await context.new_page()
 
         # Interceptar URLs de vídeo de Google Flow como respaldo automático
@@ -559,6 +634,16 @@ async def run_flow_generator(delivery_dir: Path, max_shots: int = 13) -> bool:
                 return False
 
             await configure_vertical_9_16(page)
+
+            # Iniciar una sesión limpia en el proyecto para evitar arrastrar tiles antiguos de vídeos previos
+            try:
+                new_sess_btn = page.locator('button[aria-label*="Iniciar sesión nueva"], button[aria-label*="New session"]').first
+                if await new_sess_btn.count() > 0 and await new_sess_btn.is_visible():
+                    await new_sess_btn.click()
+                    await asyncio.sleep(2.5)
+                    log("Sesión limpia iniciada en Google Flow (hilo reseteado sin tiles previos).")
+            except Exception as e:
+                log(f"Nota al limpiar hilo de Flow: {e}")
 
             for s in pending_shots:
                 out_mp4 = shots_dir / f"{s['id']}.mp4"

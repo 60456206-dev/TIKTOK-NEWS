@@ -15,6 +15,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.request
 import urllib.parse
 from datetime import datetime
@@ -45,10 +46,10 @@ PROD_CONFIG = load_production_config()
 STYLE_PREFIX = (
     PROD_CONFIG.get("consistencia_visual", {}).get("estilo_maestro")
     or (
-        "Vertical 9:16, high-end stylized 3D cinematic animation, RTX ray tracing reflections, "
-        "Unreal Engine 5.4 Lumen global illumination, Octane path tracer quality, rich tactile PBR textures, "
-        "volumetric atmospheric fog, cinematic shallow depth of field, vivid dramatic lighting, "
-        "masterpiece render, no photorealism, no uncanny valley, no flat surfaces. "
+        "Vertical 9:16, prestigious scientific and technical documentary aesthetic, dramatic chiaroscuro studio lighting, "
+        "deep carbon background shadows with directional rim light, tactile textured surface patina inspired by Veritasium and Jakub Misiek illustrations, "
+        "subtle analog film grain, volumetric atmosphere, clean surgical vector schematics, shallow depth of field, slow continuous camera push-in, "
+        "masterpiece quality, no plastic CGI surfaces, no uncanny valley. "
     )
 )
 if not STYLE_PREFIX.endswith(". ") and not STYLE_PREFIX.endswith("."):
@@ -92,15 +93,14 @@ def build_shot_prompts(
     is_cyber: bool = False,
     is_ai: bool = False,
     is_space: bool = False,
-    is_peru: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Construye los 13 planos con anclas de consistencia visual por categoría:
     - Modo Híbrido: 8 Planos Cinemáticos Flow + 5 Planos Infográficos Vector HUD FFmpeg (0 créditos).
     - Modo Flow Puro: 13 Planos 100% Cinemáticos en Flow si está configurado en config_produccion.json.
     """
-    active_mode = PROD_CONFIG.get("modo_produccion", {}).get("activo", "hibrido")
-    is_full_flow = (active_mode == "flow_puro")
+    active_mode = PROD_CONFIG.get("modo_produccion", {}).get("activo", "flow_primario")
+    is_full_flow = (active_mode in ["flow_puro", "flow_primario"])
 
     if is_aviation:
         raw_shots = [
@@ -203,27 +203,11 @@ def build_shot_prompts(
             {
                 "id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s",
                 "render_mode": "infographic",
-                "type": "Cierre Interactivo",
-                "action": "Cámara lenta sobre el océano nocturno con holograma de pregunta para comentarios.",
-                "visual_en": "Cinematic slow camera drift over a dark moody ocean at night with a glowing 3D holographic question mark icon and digital news frame floating in the center.",
-                "fallback_en": "Stylized 3D glowing cyan question mark hologram floating over a dark blue digital background."
+                "type": "Cierre Documental Veritasium",
+                "action": "Cámara lenta sobre el océano nocturno con ficha documental sobria de reflexión final.",
+                "visual_en": "Cinematic slow camera drift over a dark moody ocean at night with subtle volumetric moonlight, clean minimal documentary title card dissolving into view, no cartoon holograms.",
+                "fallback_en": "Stylized cinematic slow camera drift over a dark moody ocean at night with elegant documentary lighting."
             },
-        ]
-    elif is_peru:
-        raw_shots = [
-            {"id": "SH01", "sec": "0-4s", "dur": 4.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Radar Sísmico INDECI", "action": "Radar sismológico en tiempo real con coordenadas del Perú y alerta roja.", "visual_en": "Tactical emergency command center in Peru with a 3D topographic radar screen pulsing over coastal territory with amber fault lines.", "fallback_en": "Stylized 3D holographic topographical map of Peru with pulsing amber fault lines and emergency telemetry."},
-            {"id": "SH02", "sec": "4-9s", "dur": 5.0, "ia_dur": "5s", "render_mode": "flow", "type": "Respuesta Operativa", "action": "Vehículos de emergencia con balizas avanzando por carretera bajo lluvia torrencial.", "visual_en": "Stylized 3D emergency convoy with flashing red and blue lights speeding down a wet highway amidst heavy rain and mist, volumetric headlights.", "fallback_en": "Stylized 3D emergency response vehicles driving through rain at night with flashing lights."},
-            {"id": "SH03", "sec": "9-14s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Parámetros de Emergencia", "action": "Telemetría de aceleración sísmica y precipitaciones fluviales en aumento.", "visual_en": "Futuristic 3D seismic telemetry screen displaying fluctuating Richter graphs and emergency alert bars in glowing red.", "fallback_en": "Stylized 3D digital seismograph monitor with glowing red telemetry curves."},
-            {"id": "SH04", "sec": "14-18s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Especialista en Terreno", "action": "Primer plano a brigadista de auxilio con chaleco táctico observando el río desbordado.", "visual_en": "Tight close-up of a stylized 3D emergency rescue worker in a high-vis orange jacket, raindrops on helmet, serious determined expression, clear facial anatomy, no face mask or cloth covering, raytraced reflections on wet skin.", "fallback_en": "Stylized 3D rescue worker in rain gear with focused expression under stormy weather, clean face without mask, raytraced lighting."},
-            {"id": "SH05", "sec": "18-22s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Coordinación de Radio", "action": "Manos operando transmisor de radiofrecuencia y trazando ruta en mapa de satélite.", "visual_en": "Close-up of gloved hands adjusting VHF radio dials and marking tactical routes on a glowing digital tablet map.", "fallback_en": "Close-up of stylized 3D hands operating a communications radio console."},
-            {"id": "SH06", "sec": "22-26s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Macro de Alerta", "action": "Macro a altavoz de alarma perimétrica y luces estroboscópicas de advertencia.", "visual_en": "Extreme macro of an outdoor civil defense siren and flashing amber strobe light vibrating in heavy rain.", "fallback_en": "Macro close-up of an amber emergency beacon flashing on a metal pole in rain."},
-            {"id": "SH07", "sec": "26-30s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Acción Perimetral", "action": "Cuadrilla desplegando barreras de contención y guiando el tránsito en zona vulnerable.", "visual_en": "Dynamic tracking shot of emergency responders placing reflective barriers and directing traffic under dark cloudy sky.", "fallback_en": "Stylized 3D emergency crew placing safety barriers on a road under rain."},
-            {"id": "SH08", "sec": "30-34s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Desplazamiento Rápido", "action": "Camioneta de rescate 4x4 cruzando badén con salpicadura de agua a alta velocidad.", "visual_en": "Low-angle dynamic tracking shot of a 4x4 rescue truck splashing through flooded water on a road with cinematic motion blur.", "fallback_en": "Stylized 3D 4x4 truck driving through water on a road at dusk."},
-            {"id": "SH09", "sec": "34-38s", "dur": 4.0, "ia_dur": "5s", "render_mode": "flow", "type": "Comando de Crisis", "action": "Autoridad en mesa de crisis firmando protocolo de auxilio inmediato con mapa de fondo.", "visual_en": "Inside emergency operations room, officials surrounding a tactical table with a glowing digital map, urgent atmosphere.", "fallback_en": "Stylized 3D crisis room with officers reviewing a digital map on a table."},
-            {"id": "SH10", "sec": "38-44s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Mapa Geodésico", "action": "Mapa 3D del departamento afectado con radio de impacto y rutas habilitadas.", "visual_en": "Holographic 3D geodetic blueprint map of the Peruvian region highlighting danger zones in bright red and safe corridors in green.", "fallback_en": "Stylized 3D holographic terrain map showing highlighted rescue zones in neon orange."},
-            {"id": "SH11", "sec": "44-50s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Reporte Oficial", "action": "Ficha oficial de balance técnico emitida por organismos de defensa nacional.", "visual_en": "Broadcast official report card graphic with emergency agency badges and rolling status metrics on dark textured background.", "fallback_en": "Clean 3D broadcast news report graphic with checkmark badges and digital text data."},
-            {"id": "SH12", "sec": "50-56s", "dur": 5.5, "ia_dur": "5s", "render_mode": "flow", "type": "Panorama de Apoyo", "action": "Amanecer sobre el valle con cuadrillas brindando apoyo humanitario a los pobladores.", "visual_en": "Wide panoramic 3D cinematic shot of a valley at dawn with emergency tents, rescue trucks, and peaceful golden morning light.", "fallback_en": "Stylized 3D landscape at dawn with relief tents and morning sunlight."},
-            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Debate Ciudadano", "action": "Tarjeta final de cierre con pregunta comunitaria sobre la respuesta a la emergencia.", "visual_en": "Cinematic slow camera drift with a glowing 3D question mark and community feedback prompt frame.", "fallback_en": "Stylized 3D glowing cyan question mark over a dark blue background."},
         ]
     elif is_cyber:
         raw_shots = [
@@ -239,7 +223,7 @@ def build_shot_prompts(
             {"id": "SH10", "sec": "38-44s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Topología de Red", "action": "Esquema 3D wireframe de nodos de red con los servidores infectados aislados en rojo.", "visual_en": "Translucent 3D wireframe network topology diagram showing compromised nodes quarantined in neon red cages.", "fallback_en": "3D holographic network diagram showing isolated data nodes highlighted in orange."},
             {"id": "SH11", "sec": "44-50s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Análisis Forense CVE", "action": "Ficha técnica de la vulnerabilidad de día cero y firma criptográfica del exploit.", "visual_en": "Broadcast cybersecurity forensic dossier showing hexadecimal payload strings, CVE identifier, and threat level badge.", "fallback_en": "Stylized 3D digital security audit dossier with cryptographic hashes and warning badges."},
             {"id": "SH12", "sec": "50-56s", "dur": 5.5, "ia_dur": "5s", "render_mode": "flow", "type": "Estabilidad Recuperada", "action": "Centro de monitoreo volviendo a estado seguro con pantallas en verde esmeralda.", "visual_en": "Wide atmospheric 3D shot of the cyber operations center calming down as wall monitors transition from red to calm emerald green.", "fallback_en": "Stylized 3D tech operations center with monitors glowing in green stability mode."},
-            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Pregunta de Ciberseguridad", "action": "Cierre interactivo preguntando sobre la vulnerabilidad de servicios esenciales.", "visual_en": "Slow camera drift with a glowing 3D question mark and digital news debate frame for comments.", "fallback_en": "Stylized 3D glowing cyan question mark over a dark digital background."},
+            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Cierre Documental Veritasium", "action": "Reflexión final sobre la fragilidad digital y el equilibrio de la infraestructura crítica.", "visual_en": "Cinematic slow camera drift through a silent server corridor in deep carbon shadows with soft amber status indicators, minimal documentary card.", "fallback_en": "Stylized 3D dark server room with minimal documentary ambient light."},
         ]
     elif is_ai:
         raw_shots = [
@@ -255,7 +239,7 @@ def build_shot_prompts(
             {"id": "SH10", "sec": "38-44s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Diagrama de Silicio 2nm", "action": "Esquema 3D wireframe de la arquitectura de núcleos y memoria HBM3e apilada.", "visual_en": "3D wireframe schematic blueprint of stacked 3D silicon chiplet architecture with high-bandwidth memory glowing in neon amber.", "fallback_en": "3D holographic wireframe blueprint of an advanced computer processor architecture."},
             {"id": "SH11", "sec": "44-50s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Benchmark de Rendimiento", "action": "Ficha oficial de rendimiento de cálculo comparando con la generación previa.", "visual_en": "Broadcast official hardware benchmark card showing throughput gain bars and energy efficiency indices on dark glass.", "fallback_en": "Clean 3D broadcast hardware benchmark chart comparing processor speeds."},
             {"id": "SH12", "sec": "50-56s", "dur": 5.5, "ia_dur": "5s", "render_mode": "flow", "type": "Granja de Supercómputo", "action": "Vista panorámica del centro de cómputo de frontera operando a pleno rendimiento.", "visual_en": "Wide atmospheric 3D cinematic shot of a vast AI supercomputing data center with thousands of glowing racks extending to the horizon.", "fallback_en": "Stylized 3D panoramic view of a massive modern data center at night."},
-            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Pregunta de IA y Hardware", "action": "Cierre interactivo preguntando sobre la llegada de la inteligencia artificial general.", "visual_en": "Cinematic slow camera drift with a glowing 3D question mark and tech debate frame for TikTok comments.", "fallback_en": "Stylized 3D glowing cyan question mark over a dark digital background."},
+            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Cierre Documental Veritasium", "action": "Reflexión final profunda sobre el límite físico del silicio y el destino de la inteligencia.", "visual_en": "Cinematic slow camera drift over a floating dark silicon wafer illuminated by a single warm golden rim light, minimal documentary title card dissolving, no cartoon holograms.", "fallback_en": "Stylized cinematic slow camera drift over glowing silicon in dark space with golden light."},
         ]
     elif is_space:
         raw_shots = [
@@ -271,7 +255,7 @@ def build_shot_prompts(
             {"id": "SH10", "sec": "38-44s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Blueprint de la Sonda", "action": "Modelo 3D wireframe de la sonda espacial con escudo térmico resaltado en ámbar.", "visual_en": "Stylized 3D wireframe blueprint of an interplanetary spacecraft rotating in dark studio with ablative heat shield in neon amber.", "fallback_en": "3D holographic wireframe blueprint of a spacecraft rotating in a dark digital space."},
             {"id": "SH11", "sec": "44-50s", "dur": 5.0, "ia_dur": "5s", "render_mode": "infographic", "type": "Telemetría Oficial NASA/ESA", "action": "Ficha oficial de datos transmitidos por la Red de Espacio Profundo.", "visual_en": "Broadcast official space telemetry graphic showing signal strength bars, mission elapsed time, and orbital parameters.", "fallback_en": "Clean 3D broadcast space mission data card with antenna signal meters."},
             {"id": "SH12", "sec": "50-56s", "dur": 5.5, "ia_dur": "5s", "render_mode": "flow", "type": "Horizonte Cósmico", "action": "Vista panorámica de la nave alejándose hacia su destino cósmico.", "visual_en": "Wide atmospheric 3D shot of the spacecraft cruising gracefully toward a distant glowing planet under a field of brilliant stars.", "fallback_en": "Stylized 3D wide view of a spaceship flying toward a distant planet in starry space."},
-            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Pregunta de Exploración", "action": "Cierre interactivo preguntando sobre el establecimiento de colonias humanas en el espacio.", "visual_en": "Cinematic slow camera drift over a starry cosmos with a glowing 3D question mark and space exploration debate frame.", "fallback_en": "Stylized 3D glowing cyan question mark over a dark starry background."},
+            {"id": "SH13", "sec": "56-62.5s", "dur": 6.2, "ia_dur": "5s", "render_mode": "infographic", "type": "Cierre Documental Veritasium", "action": "Reflexión final sobre el lugar de la humanidad frente a la inmensidad del cosmos.", "visual_en": "Cinematic slow camera drift pulling away into the deep cosmic void, Earth becoming a fragile pale blue dot in darkness, minimal documentary title card dissolving, no cartoon holograms.", "fallback_en": "Stylized cinematic slow camera drift over deep starry cosmos with subtle celestial rim light."},
         ]
     else:
         raw_shots = [
@@ -309,11 +293,12 @@ def build_shot_prompts(
 def generate_dynamic_news_script(news: Dict[str, Any], genre_label: str) -> str:
     """
     Genera un guión periodístico ágil, intrigante y de alto impacto para TikTok Noticias
-    utilizando Gemini 3.5 Flash / 3.8 Flash con estructura de periodismo explicativo (Vox/Johnny Harris):
-    1. Contexto previo y gancho intrigante (0-12s): contextualiza el hecho para que cualquiera entienda.
-    2. Datos duros, nombres y cifras concretas de la noticia (12-40s).
-    3. Conflicto y consecuencias a futuro (40-52s).
-    4. Pregunta polarizante y curiosidad para comentarios (52-62s).
+    siguiendo la fórmula explicativa por primeros principios de Veritasium:
+    1. Paradoja o misterio de entrada (0-10s): plantea un hecho contra-intuitivo que despierta curiosidad.
+    2. El peligro real y las apuestas tangibles (10-25s): consecuencias críticas, datos y cifras concretas.
+    3. Deconstrucción por primeros principios con analogía simple (25-45s).
+    4. La solución maestra o giro técnico (45-55s).
+    5. Cierre filosófico y reflexión profunda sobre el futuro o impacto en la humanidad (55-62s).
     Longitud calibrada: 145-160 palabras para asegurar >60s de locución monetizable en TikTok.
     """
     title = news.get("title", "")
@@ -322,7 +307,7 @@ def generate_dynamic_news_script(news: Dict[str, Any], genre_label: str) -> str:
     key = os.getenv("GEMINI_API_KEY")
 
     if key:
-        prompt = f"""Eres el mejor guionista y showrunner de TikTok Noticias (estilo documental ágil de alta retención, tipo Vox o Johnny Harris).
+        prompt = f"""Eres el mejor guionista de divulgación científica y periodismo explicativo de alta retención del mundo (con el estándar exacto de Veritasium).
 Escribe un guión de locución para un vídeo vertical de TikTok de exactamente 61 a 64 segundos (entre 145 y 160 palabras exactas para superar 60 segundos de locución).
 
 Noticia: {title}
@@ -330,18 +315,21 @@ Fuente oficial: {source}
 Categoría: {genre_label}
 Resumen / Datos clave: {summary}
 
-ESTRUCTURA OBLIGATORIA:
-1. CONTEXTO Y GANCHO INTRIGANTE (0-12s): NO lances la noticia en seco ni abras con titulares en pregunta. Explica primero el contexto intrigante de fondo para que cualquier persona entienda por qué esto es crucial y qué estaba en juego antes de soltar la noticia principal.
-2. EL SUCESO Y CIFRAS EXACTAS (12-40s): Cita los datos reales, cifras concretas, nombres de empresas, países, regiones o instituciones involucradas. Cero relleno corporativo o frases vacías como "las autoridades evalúan la magnitud".
-3. CONFLICTO Y CONSECUENCIAS (40-52s): El choque real, el peligro desatado o por qué esto cambia las cosas a futuro.
-4. PREGUNTA FINAL Y LLAMADO AL DEBATE (52-62s): Cierre con una pregunta provocadora que despierte curiosidad genuina para que los usuarios discutan en los comentarios.
+ESTRUCTURA EXPLICATIVA VERITASIUM (OBLIGATORIA):
+1. PARADOJA O MISTERIO VISUAL (0-10s): Abre planteando una paradoja desconcertante, una anomalía o un hecho contra-intuitivo que despierte curiosidad voraz. Haz que el espectador sienta que lo que está ocurriendo desafía el sentido común.
+2. EL PELIGRO REAL Y QUÉ ESTÁ EN JUEGO (10-25s): Conecta de inmediato con las consecuencias críticas del mundo real (daños multimillonarios, vidas, seguridad nacional, colapso de infraestructura o hitos históricos). Cita los datos reales, cifras concretas, nombres de instituciones, empresas o regiones de la noticia.
+3. DECONSTRUCCIÓN POR PRIMEROS PRINCIPIOS CON ANALOGÍA SIMPLE (25-45s): Desarma el problema capa por capa desde lo elemental. Usa una analogía física cotidiana o visual para que cualquiera entienda el fenómeno sin perderse en tecnicismos vacíos.
+4. LA SOLUCIÓN MAESTRA O GIRO INGENIOSO (45-55s): Explica la solución técnica, la decisión humana o el descubrimiento que resolvió el dilema.
+5. CIERRE FILOSÓFICO O PREGUNTA PROFUNDA (55-62s): Termina con una reflexión impactante sobre el ingenio humano, el futuro de la sociedad o el rumbo de la tecnología.
+   ESTRICTAMENTE PROHIBIDO decir "deja tus comentarios", "déjamelo en los comentarios", "comenta abajo" ni frases clichés similares. Cierra con altura, sobriedad y contundencia.
 
 REGLAS DE ESTILO:
-- En español neutro, apasionado, con signos de admiración en momentos de tensión y ritmo dinámico.
+- En español neutro, apasionado, con convicción, ritmo dinámico y pausas dramáticas.
 - Longitud estricta: entre 145 y 160 palabras.
+- Cero muletillas de "deja tus comentarios" o "comenta abajo".
 - Devuelve ÚNICAMENTE el texto que leerá el locutor en voz alta, sin encabezados, sin corchetes, sin etiquetas de tiempo."""
 
-        for model in ["gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest"]:
+        for model in ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-3.5-flash"]:
             try:
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
                 body = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -350,23 +338,22 @@ REGLAS DE ESTILO:
                     data = json.load(resp)
                     text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
                     words = text.split()
-                    if len(words) >= 125:
-                        print(f"[PIPELINE-AI] ✅ Guión dinámico con contexto generado por {model} ({len(words)} palabras)", flush=True)
+                    if len(words) >= 140:
+                        print(f"[PIPELINE-AI] ✅ Guión Veritasium generado por {model} ({len(words)} palabras)", flush=True)
                         return text
             except Exception as e:
                 print(f"[PIPELINE-AI] ⚠️ Error generando guión con {model}: {e}", flush=True)
+                time.sleep(1.0)
 
-    # Fallback dinámico inteligente si no hay conexión externa
+    # Fallback explicativo estilo Veritasium (152 palabras calibradas a 62.0s)
     title_clean = re.sub(r"^[¿\s]+|[?!\s]+$", "", title)
     return (
-        f"Para entender la magnitud de lo que acaba de ocurrir, debemos mirar lo que estaba en juego detrás de escena. "
-        f"Durante meses, la tensión fue en aumento hasta que hoy se confirmó una noticia que cambia el panorama por completo: {title_clean}. "
-        f"De acuerdo con los reportes oficiales contrastados por la redacción de {source}, los datos confirman un impacto inmediato que toma por sorpresa al sector. "
-        f"Las cifras sobre la mesa revelan una brecha crítica entre lo que se esperaba y la realidad operativa en el terreno. "
-        f"Especialistas advierten que las consecuencias no tardarán en sentirse, alterando el equilibrio de fuerzas y obligando a tomar decisiones drásticas en las próximas horas. "
-        f"Lo que parecía un incidente aislado ahora se perfila como un punto de inflexión irreversible. "
-        f"¿Consideras que esta situación se pudo haber evitado o era una crisis inevitable desde el principio? "
-        f"Déjame tu opinión en los comentarios."
+        f"A simple vista esto parece un error imposible o un fenómeno sacado de la ciencia ficción, pero detrás se esconde un mecanismo fundamental que desafía lo que creíamos seguro. "
+        f"Lo que acaba de confirmarse pone en alerta máxima a la comunidad internacional: {title_clean}. "
+        f"De acuerdo con los reportes contrastados directamente por la redacción de {source}, el verdadero peligro no es solo lo que vemos en superficie, sino la reacción en cadena desatada en los sistemas críticos. "
+        f"Pensemos en esto como un efecto dominó a escala masiva, donde una pequeña anomalía física multiplica su fuerza hasta empujar a los protocolos de emergencia al límite operativo. "
+        f"Para resolverlo, los especialistas tuvieron que recurrir a una maniobra técnica de altísima precisión, aislando el punto de falla antes de que el colapso fuera inevitable. "
+        f"Este suceso nos recuerda una verdad inquietante sobre el mundo moderno: cuanto más compleja es la tecnología que nos rodea, más frágil resulta la línea que nos separa del caos."
     )
 
 
@@ -381,14 +368,11 @@ def generate_monetizable_storyboard(news: Dict[str, Any]) -> Dict[str, Any]:
     title_low = title.lower()
     raw_genre = (news.get("genre") or "").upper()
 
-    is_peru_disaster = (
-        news.get("is_peru_priority", False)
-        or any(kw_match(k, title_low) for k in ["perú", "peru", "lima", "arequipa", "piura", "indeci", "sismo", "huaico", "terremoto", "panamericana", "el niño", "rpp", "andina", "lluvia"])
-    )
     is_aviation = (
         news.get("is_aviation_incident", False)
         or news.get("is_aviation", False)
-        or any(kw_match(k, title_low) for k in ["avión", "aeronave", "vuelo", "accidente", "aircraft", "flight", "plane", "pilot", "mayday", "crash", "haiti", "boeing", "airbus", "aerotime"])
+        or "G1" in raw_genre
+        or any(kw_match(k, title_low) for k in ["avión", "aeronave", "vuelo", "accidente", "aircraft", "flight", "plane", "pilot", "mayday", "crash", "boeing", "airbus", "aerotime"])
     )
     is_cyber = (
         "G2" in raw_genre
@@ -406,19 +390,16 @@ def generate_monetizable_storyboard(news: Dict[str, Any]) -> Dict[str, Any]:
     # Prioridad estricta según categoría de la fuente para evitar falsos cruces
     if "G2" in raw_genre:
         genre_label = "G2_CIBERATAQUES"
-        is_cyber, is_ai, is_space, is_aviation, is_peru_disaster = True, False, False, False, False
+        is_cyber, is_ai, is_space, is_aviation = True, False, False, False
     elif "G3" in raw_genre:
         genre_label = "G3_IA_HARDWARE"
-        is_ai, is_cyber, is_space, is_aviation, is_peru_disaster = True, False, False, False, False
+        is_ai, is_cyber, is_space, is_aviation = True, False, False, False
     elif "G4" in raw_genre:
         genre_label = "G4_ESPACIO"
-        is_space, is_ai, is_cyber, is_aviation, is_peru_disaster = True, False, False, False, False
-    elif is_peru_disaster and not is_aviation:
-        genre_label = "G1_PERU_DESASTRES"
-        is_peru_disaster, is_aviation, is_cyber, is_ai, is_space = True, False, False, False, False
+        is_space, is_ai, is_cyber, is_aviation = True, False, False, False
     elif is_aviation or "G1" in raw_genre:
         genre_label = "G1_AVIACION"
-        is_aviation, is_peru_disaster, is_cyber, is_ai, is_space = True, False, False, False, False
+        is_aviation, is_cyber, is_ai, is_space = True, False, False, False
     elif is_cyber:
         genre_label = "G2_CIBERATAQUES"
     elif is_ai:
@@ -439,7 +420,6 @@ def generate_monetizable_storyboard(news: Dict[str, Any]) -> Dict[str, Any]:
         is_cyber=is_cyber,
         is_ai=is_ai,
         is_space=is_space,
-        is_peru=is_peru_disaster,
     )
 
     return {
@@ -469,10 +449,11 @@ async def synthesize_voiceover(script: str, output_path: Path, voice: str = "Fen
     dur = generate_speech(script, output_path, voice_gemini=voice, voice_edge="es-MX-JorgeNeural", style=style)
 
     # Si la lectura queda por debajo de 61.0s, ajustar sutilmente el tempo para asegurar monetización (>60s)
+    # Capped a factor >= 0.94 para preservar 100% de naturalidad y evitar efecto de voz lenta o robótica
     if 0 < dur < 61.0:
-        factor = dur / 62.0  # e.g. 58s -> 0.935 (mantiene tono nativo imperceptiblemente más solemne)
+        factor = max(0.94, dur / 61.5)
         if 0.5 <= factor <= 0.99:
-            print(f"[PIPELINE] Ajustando tempo ({factor:.3f}) para garantizar >61.0s de monetización...", flush=True)
+            print(f"[PIPELINE] Calibrando tempo sutil ({factor:.3f}) para garantizar >61.0s de monetización sin alterar tono...", flush=True)
             adjusted_path = output_path.with_suffix(".adj.mp3")
             cmd = [
                 "ffmpeg", "-y", "-i", str(output_path),
@@ -490,22 +471,46 @@ async def synthesize_voiceover(script: str, output_path: Path, voice: str = "Fen
 
 def run_pipeline(genre_key: Optional[str] = None, rank_index: int = 0) -> Path:
     from news_radar import get_daily_4_genres, get_top_news_by_genre
-    print("1. Escaneando y clasificando noticias con orden cronológico y prioridad Perú/Aviación...", flush=True)
+    print("1. Escaneando y clasificando noticias con orden cronológico y enfoque especializado...", flush=True)
 
     genre_map = {
         "G1": "G1_AVIACION_CATASTROFES",
         "G2": "G2_CIBERATAQUES_HACKERS",
         "G3": "G3_IA_ROBOTICA",
         "G4": "G4_ESPACIO_CIENCIA",
+        "G1_AVIACION": "G1_AVIACION_CATASTROFES",
         "G1_AVIACION_CATASTROFES": "G1_AVIACION_CATASTROFES",
         "G2_CIBERATAQUES_HACKERS": "G2_CIBERATAQUES_HACKERS",
         "G3_IA_ROBOTICA": "G3_IA_ROBOTICA",
         "G4_ESPACIO_CIENCIA": "G4_ESPACIO_CIENCIA",
+        "SLOT_1": "SLOT_1",
+        "SLOT_2": "SLOT_2",
+        "TECH": "SLOT_2",
+        "CIENCIA": "SLOT_2",
     }
 
-    full_key = genre_map.get(genre_key, genre_key) if genre_key else None
+    raw_key = (genre_key or "").upper()
+    full_key = genre_map.get(raw_key, genre_key) if genre_key else None
 
-    if full_key:
+    if full_key == "SLOT_1":
+        # Slot 1: Especializado en Aviación Internacional & Seguridad Aérea
+        ranked_items = get_top_news_by_genre("G1_AVIACION_CATASTROFES", limit=max(5, rank_index + 1))
+        top_news = ranked_items[rank_index] if ranked_items and rank_index < len(ranked_items) else (ranked_items[0] if ranked_items else get_daily_4_genres()["G1_AVIACION_CATASTROFES"])
+    elif full_key == "SLOT_2":
+        # Slot 2: Especializado en Frontera Tecnológica y Científica Veritasium (G3, G2, G4)
+        tech_genres = ["G3_IA_ROBOTICA", "G2_CIBERATAQUES_HACKERS", "G4_ESPACIO_CIENCIA"]
+        tech_candidates = []
+        for tg in tech_genres:
+            t_items = get_top_news_by_genre(tg, limit=1)
+            if t_items:
+                tech_candidates.extend(t_items)
+        if tech_candidates:
+            tech_candidates.sort(key=lambda x: (x.get("score", 0), x.get("timestamp", 0)), reverse=True)
+            top_news = tech_candidates[0]
+        else:
+            daily_genres = get_daily_4_genres()
+            top_news = daily_genres.get("G3_IA_ROBOTICA", list(daily_genres.values())[0])
+    elif full_key:
         ranked_items = get_top_news_by_genre(full_key, limit=max(5, rank_index + 1))
         if ranked_items and rank_index < len(ranked_items):
             top_news = ranked_items[rank_index]
@@ -514,20 +519,21 @@ def run_pipeline(genre_key: Optional[str] = None, rank_index: int = 0) -> Path:
         else:
             daily_genres = get_daily_4_genres()
             top_news = daily_genres.get(full_key, list(daily_genres.values())[0])
-
-        suffix = full_key.replace("G1_", "").replace("G2_", "").replace("G3_", "").replace("G4_", "")
-        if rank_index > 0:
-            suffix += f"_V{rank_index+1}"
     else:
         daily_genres = get_daily_4_genres()
         genre_key = max(daily_genres, key=lambda g: daily_genres[g].get("score", 1.0))
         top_news = daily_genres[genre_key]
-        suffix = "AUTONOMO"
 
     print(f"\n2. Noticia seleccionada para [{top_news.get('genre_label', genre_key)}]:")
     print(f"   [{top_news['source_name']}] {top_news['title']}")
 
     storyboard = generate_monetizable_storyboard(top_news)
+
+    # Derivar sufijo canónico exacto para la carpeta de entrega
+    canon = storyboard.get("genre_canonical") or top_news.get("genre_label") or full_key or "AUTONOMO"
+    suffix = canon.replace("G1_", "").replace("G2_", "").replace("G3_", "").replace("G4_", "")
+    if rank_index > 0:
+        suffix += f"_V{rank_index+1}"
 
     today_str = datetime.now().strftime("%Y-%m-%d")
     folder_name = f"{today_str}_{suffix}"

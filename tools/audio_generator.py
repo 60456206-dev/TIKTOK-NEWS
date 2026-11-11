@@ -67,15 +67,6 @@ GENRE_SOUNDTRACK_CATALOG = {
         "bass_file": "G1_AVIATION_TRACE_BASS.mp3",
         "inst_file": "G1_AVIATION_TRACE_INSTRUMENTS.mp3"
     },
-    "G1_PERU_DESASTRES": {
-        "title": "Shifting Ground",
-        "artist": "Luba Hilman",
-        "bpm": 110,
-        "style": "Dramatic Emergency Pulse / Heavy Orchestral Tension",
-        "id": "87893ebf-9476-46ff-9cc1-f1227748c791",
-        "bass_file": "G1_PERU_SHIFTING_BASS.mp3",
-        "inst_file": "G1_PERU_SHIFTING_INSTRUMENTS.mp3"
-    },
     "G4_ESPACIO": {
         "title": "Mindscape",
         "artist": "Lennon Hutton",
@@ -111,11 +102,9 @@ def get_genre_soundtrack(genre: str, target_dir: Optional[Path] = None) -> Tuple
     assets_dir = target_dir or DEFAULT_ASSETS_DIR
     genre_upper = (genre or "G1").upper()
 
-    # Selección inteligente de categoría musical (comprobando aviación y desastres antes de tokens cortos)
-    if any(k in genre_upper for k in ["AVIACION", "AVIACIÓN", "MAYDAY", "VUELO", "AEREO", "AÉREO", "AVION", "AVIÓN", "ACCIDENTE"]):
+    # Selección de categoría musical
+    if any(k in genre_upper for k in ["G1", "AVIACION", "AVIACIÓN", "MAYDAY", "VUELO", "AEREO", "AÉREO", "AVION", "AVIÓN", "ACCIDENTE"]):
         key = "G1_AVIACION"
-    elif any(k in genre_upper for k in ["PERU", "PERÚ", "DESASTRES", "INDECI", "LLUVIA", "SISMO", "HUAICO"]):
-        key = "G1_PERU_DESASTRES"
     elif any(k in genre_upper for k in ["G2", "CIBER", "HACKER", "CYBER", "RANSOMWARE"]):
         key = "G2_CIBERATAQUES"
     elif any(k in genre_upper for k in ["G4", "ESPACIO", "NASA", "ORBITA", "ÓRBITA", "CIENCIA", "STARSHIP"]):

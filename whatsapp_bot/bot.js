@@ -546,9 +546,9 @@ client.on('message_create', async (msg) => {
         if (parsed >= 1 && parsed <= 10) count = parsed;
       }
 
-      if (/\b(g1|aviacion|aviación|catastrofe|catástrofe|peru|perú)\b/.test(lower)) {
+      if (/\b(g1|aviacion|aviación|vuelo|mayday|aereo|aéreo)\b/.test(lower)) {
         args.push('--genre', 'G1');
-        modeText = `Género 1 (🚨 Aviación & Desastres Perú/Mundo)`;
+        modeText = `Género 1 (✈️ Aviación Internacional & Seguridad Aérea)`;
       } else if (/\b(g2|ciber|ciberataque|hacker)\b/.test(lower)) {
         args.push('--genre', 'G2');
         modeText = `Género 2 (💻 Ciberataques & Amenazas)`;

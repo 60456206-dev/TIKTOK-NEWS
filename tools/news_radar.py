@@ -4,10 +4,9 @@ TIKTOK RADAR · Módulo de Ingesta, Filtrado Anti-Spam y Clasificación Intelige
 Reglas Fundamentales de Producción:
 1. Cronología Estricta: De lo más reciente a lo más antiguo (primicias de foros y agencias).
 2. Densidad Informativa, Potencial de Vistas (Viralidad) y Polémica/Controversia.
-3. Prioridad Nacional Perú en Desastres Naturales y Catástrofes (Puesto #1 en G1).
-4. Aviación: Selección estricta del último incidente o emergencia reportada.
-5. Inclusión obligatoria de TechCrunch y Tom's Hardware en tecnología/chips.
-6. Soporte para generar N vídeos (ej. 5 vídeos) sin duplicar noticias.
+3. Aviación Internacional (G1): Selección estricta del último incidente o emergencia Mayday reportada.
+4. Inclusión obligatoria de TechCrunch y Tom's Hardware en tecnología/chips.
+5. Soporte para generar N vídeos (ej. 5 vídeos) sin duplicar noticias.
 """
 
 import email.utils
@@ -31,42 +30,33 @@ BLACKLIST_TERMS = [
     "republicanos", "candidato", "escaños"
 ]
 
-# Fuentes internacionales y nacionales organizadas por categoría
+# Fuentes internacionales organizadas por categoría
 FEEDS = [
     # -------------------------------------------------------------------------
-    # 1. 🚨 G1: Aviación, Catástrofes y Desastres Naturales
+    # 1. ✈️ G1: Aviación Internacional & Seguridad Aérea
     # -------------------------------------------------------------------------
-    {
-        "id": "rpp_peru",
-        "name": "RPP Noticias (Alerta Perú)",
-        "url": "https://rpp.pe/feed",
-        "primary_genre": "G1_AVIACION_CATASTROFES",
-        "allowed_genres": ["G1_AVIACION_CATASTROFES"],
-        "weight": 1.7,
-        "is_peru": True,
-    },
-    {
-        "id": "elcomercio_peru",
-        "name": "El Comercio Perú",
-        "url": "https://elcomercio.pe/arc/outboundfeeds/rss/?outputType=xml",
-        "primary_genre": "G1_AVIACION_CATASTROFES",
-        "allowed_genres": ["G1_AVIACION_CATASTROFES"],
-        "weight": 1.6,
-        "is_peru": True,
-    },
-    {
-        "id": "andina_peru",
-        "name": "Agencia Andina Perú",
-        "url": "https://andina.pe/agencia/rss/noticias.aspx",
-        "primary_genre": "G1_AVIACION_CATASTROFES",
-        "allowed_genres": ["G1_AVIACION_CATASTROFES"],
-        "weight": 1.5,
-        "is_peru": True,
-    },
     {
         "id": "aerotime",
         "name": "AeroTime Global Aviation",
         "url": "https://www.aerotime.aero/feed",
+        "primary_genre": "G1_AVIACION_CATASTROFES",
+        "allowed_genres": ["G1_AVIACION_CATASTROFES"],
+        "weight": 1.7,
+        "is_aviation": True,
+    },
+    {
+        "id": "flightradar24",
+        "name": "Flightradar24 Aviation News",
+        "url": "https://www.flightradar24.com/blog/feed/",
+        "primary_genre": "G1_AVIACION_CATASTROFES",
+        "allowed_genres": ["G1_AVIACION_CATASTROFES"],
+        "weight": 1.7,
+        "is_aviation": True,
+    },
+    {
+        "id": "aviation24",
+        "name": "Aviation24 Global",
+        "url": "https://www.aviation24.be/feed/",
         "primary_genre": "G1_AVIACION_CATASTROFES",
         "allowed_genres": ["G1_AVIACION_CATASTROFES"],
         "weight": 1.6,
@@ -213,9 +203,17 @@ FEEDS = [
         "weight": 1.6,
     },
     {
-        "id": "esa_news",
-        "name": "European Space Agency (ESA)",
-        "url": "https://www.esa.int/rssfeed/Our_Activities/Space_News",
+        "id": "spacenews",
+        "name": "SpaceNews Global",
+        "url": "https://spacenews.com/feed/",
+        "primary_genre": "G4_ESPACIO_CIENCIA",
+        "allowed_genres": ["G4_ESPACIO_CIENCIA"],
+        "weight": 1.6,
+    },
+    {
+        "id": "space_com",
+        "name": "Space.com Breaking News",
+        "url": "https://www.space.com/feeds/all",
         "primary_genre": "G4_ESPACIO_CIENCIA",
         "allowed_genres": ["G4_ESPACIO_CIENCIA"],
         "weight": 1.5,
@@ -228,26 +226,18 @@ FEEDS = [
         "allowed_genres": ["G4_ESPACIO_CIENCIA"],
         "weight": 1.4,
     },
-    {
-        "id": "europapress_ciencia",
-        "name": "EuropaPress Ciencia & Espacio",
-        "url": "https://www.europapress.es/rss/rss.aspx?ch=00136",
-        "primary_genre": "G4_ESPACIO_CIENCIA",
-        "allowed_genres": ["G4_ESPACIO_CIENCIA"],
-        "weight": 1.3,
-    },
 ]
 
 # Palabras clave por género temático
 GENRE_KEYWORDS = {
     "G1_AVIACION_CATASTROFES": [
         "avión", "aeronave", "vuelo", "aterrizaje", "piloto", "cabina", "altitud",
-        "accidente", "choque", "desastre", "colisión", "catástrofe", "rescate",
-        "emergencia", "naufragio", "tormenta", "huracán", "volcán", "terremoto",
-        "sismo", "temblor", "huaico", "aluvión", "deslizamiento", "inundación",
-        "tsunami", "explosión", "evacuación", "alerta roja", "radar", "marítimo",
+        "accidente aéreo", "colisión aérea", "rescate aéreo", "emergencia aérea",
+        "mayday", "boeing", "airbus", "turbulencia", "caja negra", "radar de vuelo",
+        "falla de motor", "pista de aterrizaje", "ntsb", "faa", "aerotime",
         "airplane", "plane", "aircraft", "flight", "cockpit", "altitude", "crash",
-        "mayday", "boeing", "airbus", "turbulence", "emergency landing", "aviation safety"
+        "air crash", "turbulence", "emergency landing", "aviation safety", "black box",
+        "engine failure", "near miss", "runway", "air traffic"
     ],
     "G2_CIBERATAQUES_HACKERS": [
         "ciberataque", "hackeo", "hackers", "ransomware", "malware", "espionaje",
@@ -274,21 +264,6 @@ GENRE_KEYWORDS = {
     ],
 }
 
-# Palabras clave geográficas e instituciones de Perú para Desastres Naturales
-PERU_LOCATIONS = [
-    "perú", "peru", "lima", "arequipa", "cusco", "piura", "trujillo", "puno",
-    "ancash", "loreto", "ica", "callao", "chimbote", "tarapoto", "chiclayo",
-    "huaraz", "indeci", "igp", "senamhi", "costa verde", "río rímac", "rio rimac"
-]
-
-# Desastres Naturales de Perú (SOLO fenómenos naturales, NO accidentes vehiculares ni aviación)
-PERU_NATURAL_DISASTER_TERMS = [
-    "sismo", "terremoto", "temblor", "huaico", "aluvión", "deslizamiento",
-    "tsunami", "desborde", "inundación", "alud", "erupción", "volcán",
-    "lluvias torrenciales", "precipitaciones", "alerta roja meteorológica",
-    "el niño", "indeci", "igp", "senamhi"
-]
-
 AVIATION_TERMS = [
     "avión", "aeronave", "vuelo", "aterrizaje", "piloto", "cabina", "altitud",
     "accidente aéreo", "airplane", "aircraft", "flight", "cockpit", "crash",
@@ -303,6 +278,31 @@ POLEMIC_KEYWORDS = [
     "amenaza", "grave", "falla", "caos", "urgente", "colapsa", "destrucción",
     "warns", "scandal", "ban", "lawsuit", "exploit", "outage", "ravages", "defeat",
     "breach", "exposed", "emergency", "urgent", "clash", "fight", "collapse", "crisis"
+]
+
+# NUEVO FILTRO: Impacto Humano, Trascendencia para la Humanidad e Interés Masivo para Todo Público
+UNIVERSAL_HUMAN_IMPACT_BOOSTS = [
+    # Avances que cambian el rumbo de la humanidad / civilización / vida diaria
+    "cambia el rumbo", "cambia la humanidad", "cura", "enfermedad", "revoluciona",
+    "histórico", "hito histórico", "vida extraterrestre", "agua en", "señal extraterrestre",
+    "nuevo planeta", "asteroide", "amenaza a la tierra", "inteligencia sobrehumana",
+    "humanoides", "robot en hogares", "fusión nuclear", "energía infinita", "revolución cuántica",
+    "milagro", "rescate heroico", "sobreviviente", "tragedia masiva", "emergencia nacional",
+    "apagón masivo", "crisis global", "peligro inminente", "alerta mundial", "pandemia",
+    "breakthrough", "cure", "alien", "extraterrestrial", "life on", "historic milestone",
+    "transforms humanity", "humanity", "existential", "quantum supremacy", "nuclear fusion",
+    "massive blackout", "unprecedented", "game-changer", "world-first", "humanoid robot"
+]
+
+# PENALIZACIÓN ESTRICTA: Minucias técnicas, contratos administrativos o noticias de nicho "rebuscadas"
+NICHE_TECHNICAL_PENALTIES = [
+    "experimental aircraft", "flight research", "research platform", "grant",
+    "contract", "contractor", "procurement", "licitación", "convenio", "acuerdo comercial",
+    "adjudicación", "subsidio", "routine maintenance", "patch notes", "firmware update",
+    "benchmarking", "benchmark suite", "minor update", "driver update", "beta release",
+    "guidelines", "committee", "workshop", "comité", "reunión técnica", "estudio preliminar",
+    "vuelo de prueba rutinario", "prueba estática", "inspección de rutina", "revisión de protocolo",
+    "mantenimiento programado", "aerotime reports that a", "small partnership"
 ]
 
 
@@ -422,18 +422,9 @@ def score_article(item: Dict[str, Any], now_ts: float) -> float:
     else:
         item["is_aviation_incident"] = False
 
-    # 3. Regla Especial Perú: EXCLUSIVA para Desastres Naturales (NUNCA aplica a aviación)
-    is_g1 = (item["genre"] == "G1_AVIACION_CATASTROFES")
-    has_peru = any(kw_match(p, combined) for p in PERU_LOCATIONS) or item.get("is_peru", False)
-    has_natural_disaster = any(kw_match(d, combined) for d in PERU_NATURAL_DISASTER_TERMS)
+    item["is_peru_priority"] = False
 
-    if is_g1 and has_peru and has_natural_disaster and not is_aviation:
-        score += 60.0  # 🇵🇪 Prioridad #1 Nacional Perú EXCLUSIVA para Desastres Naturales
-        item["is_peru_priority"] = True
-    else:
-        item["is_peru_priority"] = False
-
-    # 4. Riqueza y Densidad Informativa (Más información)
+    # 3. Riqueza y Densidad Informativa (Más información)
     text_len = len(item["title"]) + len(item["summary"])
     if text_len >= 120:
         score += 1.5
@@ -453,6 +444,25 @@ def score_article(item: Dict[str, Any], now_ts: float) -> float:
     kw_hits = [k for k in genre_kws if kw_match(k, combined)]
     for kw in kw_hits:
         score += 2.5 if kw_match(kw, title_low) else 1.0
+
+    # 7. NUEVO FILTRO: Trascendencia Humana e Impacto Emocional para Todo Público
+    # Bonifica avances que cambian el rumbo de la humanidad, misterios globales y alta emoción
+    human_boost_hits = [k for k in UNIVERSAL_HUMAN_IMPACT_BOOSTS if k in combined]
+    if human_boost_hits:
+        boost_pts = min(22.0, len(human_boost_hits) * 7.0)
+        score += boost_pts
+        item["human_impact_level"] = "ALTO"
+    else:
+        item["human_impact_level"] = "NORMAL"
+
+    # 8. FILTRO NEGATIVO: Penalización estricta a tecnicismos rebuscados o contratos administrativos de nicho
+    niche_penalties = [k for k in NICHE_TECHNICAL_PENALTIES if k in combined]
+    if niche_penalties:
+        penalty_pts = min(25.0, len(niche_penalties) * 9.0)
+        score -= penalty_pts
+        item["is_niche_rebuscada"] = True
+    else:
+        item["is_niche_rebuscada"] = False
 
     return round(score, 2)
 
@@ -552,6 +562,65 @@ def scan_all_sources() -> List[Dict[str, Any]]:
     return all_news
 
 
+def rerank_by_human_impact_gemini(candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Utiliza Gemini para evaluar el porcentaje de interés de cada noticia para cualquier persona común
+    y su nivel de impacto emocional / trascendencia para la humanidad.
+    Filtra noticias rebuscadas o de nicho hiper-específico.
+    """
+    import os
+    key = os.getenv("GEMINI_API_KEY")
+    if not key or len(candidates) <= 1:
+        return candidates
+
+    try:
+        sample_list = candidates[:6]
+        items_text = "\n".join([
+            f"[{idx}] Fuente: {c['source_name']} | Título: {c['title']} | Resumen: {c['summary'][:180]}"
+            for idx, c in enumerate(sample_list)
+        ])
+
+        prompt = f"""Eres el director de contenidos de un noticiero masivo de TikTok para todo público (NO para un nicho cerrado).
+Tu objetivo es seleccionar la noticia que de verdad le importe conocer a CUALQUIER PERSONA COMÚN, evaluando su nivel de impacto emocional y trascendencia general (ej. avances que cambien el rumbo de la humanidad, amenazas directas, fenómenos masivos, descubrimientos históricos).
+DESCARTA O RELEGA noticias rebuscadas, contratos administrativos, licitaciones o minucias técnicas que solo le interesan a un especialista.
+
+Evalúa estas {len(sample_list)} noticias y ordénalas de MAYOR A MENOR impacto para el público general:
+{items_text}
+
+Responde ÚNICAMENTE con un JSON con los índices ordenados y el motivo breve:
+{{"ranked_indices": [0, 1, ...], "top_reason": "breve justificación"}}"""
+
+        body = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={key}",
+            data=body,
+            headers={"Content-Type": "application/json"}
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.load(resp)
+            ans = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            # Buscar el bloque JSON
+            m = re.search(r'\{.*"ranked_indices"\s*:\s*\[([0-9,\s]+)\].*\}', ans, re.DOTALL)
+            if m:
+                ranked_idx_list = [int(x.strip()) for x in m.group(1).split(",") if x.strip().isdigit()]
+                reranked = []
+                seen = set()
+                for idx in ranked_idx_list:
+                    if 0 <= idx < len(sample_list) and idx not in seen:
+                        reranked.append(sample_list[idx])
+                        seen.add(idx)
+                for idx, c in enumerate(sample_list):
+                    if idx not in seen:
+                        reranked.append(c)
+                # Conservar los candidatos restantes fuera del top 6
+                reranked.extend(candidates[6:])
+                return reranked
+    except Exception as e:
+        print(f"[RADAR-AI] Aviso al clasificar impacto humano con Gemini: {e}")
+
+    return candidates
+
+
 def get_top_news_by_genre(genre_key: str, limit: int = 5) -> List[Dict[str, Any]]:
     """
     Obtiene las mejores N noticias para un género específico, aplicando:
@@ -559,15 +628,14 @@ def get_top_news_by_genre(genre_key: str, limit: int = 5) -> List[Dict[str, Any]
     2. Comparación entre todas las fuentes y foros de la categoría.
     3. Selección de la noticia con más información, vistas potenciales y polémica.
     4. Deduplicación para que los N vídeos sean sobre temas distintos.
-    5. En G1: Puesto #0 (rank 0) prioriza Desastres Perú y Puesto #1 (rank 1) garantiza Aviación Global.
+    5. En G1: Selección estricta de incidentes de vuelo y seguridad aérea internacional.
     """
     all_news = scan_all_sources()
     genre_items = [item for item in all_news if item["genre"] == genre_key]
 
-    # Ordenar primero: noticias de Perú arriba (si es G1), luego por puntaje integral
+    # Ordenar por puntaje integral y frescura cronológica
     genre_items.sort(
         key=lambda x: (
-            1 if x.get("is_peru_priority") else 0,
             x["score"],
             x.get("timestamp", 0)
         ),
@@ -587,15 +655,8 @@ def get_top_news_by_genre(genre_key: str, limit: int = 5) -> List[Dict[str, Any]
         if len(unique_items) >= max(limit, 8):
             break
 
-    # Regla de separación G1 para cronograma diario:
-    # Rank 0 = Desastres Perú (07:00 AM), Rank 1 = Aviación Internacional (10:00 AM)
-    if genre_key == "G1_AVIACION_CATASTROFES" and len(unique_items) >= 2:
-        if not unique_items[1].get("is_aviation_incident"):
-            for idx in range(2, len(unique_items)):
-                if unique_items[idx].get("is_aviation_incident"):
-                    av_item = unique_items.pop(idx)
-                    unique_items.insert(1, av_item)
-                    break
+    # Aplicar re-ranking con IA por Impacto Humano y Emocional para todo público
+    unique_items = rerank_by_human_impact_gemini(unique_items)
 
     return unique_items[:limit]
 
@@ -606,7 +667,7 @@ def get_daily_4_genres() -> Dict[str, Dict[str, Any]]:
     Garantiza la producción de 4 vídeos diarios sin repetir temáticas.
     """
     genre_names = {
-        "G1_AVIACION_CATASTROFES": "🚨 AVIACIÓN & CATÁSTROFES",
+        "G1_AVIACION_CATASTROFES": "✈️ AVIACIÓN INTERNACIONAL",
         "G2_CIBERATAQUES_HACKERS": "💻 CIBERATAQUES & AMENAZAS",
         "G3_IA_ROBOTICA": "🤖 INTELIGENCIA ARTIFICIAL & TECH",
         "G4_ESPACIO_CIENCIA": "🚀 ESPACIO & CIENCIA EXTREMA",
