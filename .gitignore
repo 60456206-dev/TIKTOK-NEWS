@@ -7,13 +7,19 @@ __pycache__/
 env/
 venv/
 
-# Temporal files
+# Env & temporal files
+.env
 *.log
 .DS_Store
 
-# Node & WhatsApp Bot
+# Node, Remotion & WhatsApp Bot
 node_modules/
 package-lock.json
+!motion_engine/package-lock.json
+.wwebjs_cache/
+.remotion_bundle/
+.remotion/
+_build_nle/
 qr_ascii.txt
 qr_raw.txt
 audio_assets/

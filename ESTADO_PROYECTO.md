@@ -1,6 +1,13 @@
 # Dónde nos quedamos
 
-Actualizado: 2026-11-11.
+Actualizado: 2026-11-16.
+
+## Sincronización Integral en AWS (`ubuntu@77.113.75.243`) · Remotion Broadcast, QC Guard, EBU R128 y Bot Blindado · 2026-11-16
+
+- **Despliegue y Sincronización Solicitada por el Usuario**:
+  - Sincronizados todos los módulos de `TIKTOK_RADAR` (2026-11-11 al 2026-11-13) hacia `STANDALONE_TIKTOK_RADAR` (`TIKTOK-NEWS.git`) y el servidor AWS (`ubuntu@77.113.75.243`).
+  - Incluye: suite Remotion React de 6 composiciones Veritasium (`motion_engine/` + `render_batch.mjs` + `remotion_renderer.py`), fuentes `Montserrat` empaquetadas, métricas reales de noticia, `WordBoundary` + `pysubs2`, masterización EBU R128 de 2 pasadas, caché modular NLE, `video_qc_inspector.py`, bloqueo automático de entrega en WhatsApp si QC marca `FAIL` (`ejecutar_todo.py`), `bot_helpers.js` y tests unitarios (`tests/`).
+  - La producción automática en `cron` permanece pausada hasta nueva orden para proteger los créditos de Google Flow.
 
 ## Refinamiento Integral y Entrega Directa sin Validación Previa · 2026-11-11
 
