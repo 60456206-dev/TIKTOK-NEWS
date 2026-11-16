@@ -299,7 +299,13 @@ async def ensure_inside_flow_project(page: Page) -> bool:
                 const buttons = Array.from(document.querySelectorAll('button, a'));
                 for (const b of buttons) {
                     const t = (b.innerText || b.getAttribute('aria-label') || '').toLowerCase();
-                    if (t.includes('nuevo proyecto') || t.includes('new project') || t.includes('crear con flow')) {
+                    if (
+                        t.includes('nuevo proyecto') ||
+                        t.includes('proyecto nuevo') ||
+                        t.includes('new project') ||
+                        t.includes('crear con flow') ||
+                        t.includes('create with flow')
+                    ) {
                         b.click();
                         return 'new_project:' + t;
                     }
