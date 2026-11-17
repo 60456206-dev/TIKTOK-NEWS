@@ -565,6 +565,88 @@ class TestRenderAndSyncUpgrades(unittest.TestCase):
             self.assertEqual(st[str(p1.resolve())]["reason"], "quota_exhausted")
             self.assertEqual(st[str(p2.resolve())]["reason"], "ok")
 
+    def test_flow_tile_detection_handles_identical_play_circle_text_and_credit_prompts(self):
+        before = [
+            {
+                "idx": 0,
+                "isGridTile": True,
+                "isGenerating": False,
+                "isReady": True,
+                "isError": False,
+                "videoSrc": "",
+                "imgSrc": "https://flow.google.com/asb/OLD_TILE",
+                "ariaLabel": "Artificial horizon indicator",
+                "imgAlt": "Miniatura de video generada",
+                "preview": "play_circle",
+            },
+            {
+                "idx": 1,
+                "isGridTile": False,
+                "isGenerating": False,
+                "isReady": True,
+                "isError": False,
+                "videoSrc": "",
+                "imgSrc": "https://storage.googleapis.com/ai-sandbox-videofx/image/OLD_CHAT",
+                "ariaLabel": "Galería de opciones de contenido multimedia",
+                "imgAlt": "Prompt viejo",
+                "preview": "play_circle",
+            },
+        ]
+        current = [
+            {
+                "idx": 0,
+                "isGridTile": True,
+                "isGenerating": False,
+                "isReady": True,
+                "isError": False,
+                "videoSrc": "",
+                "imgSrc": "https://flow.google.com/asb/NEW_SH07_TILE",
+                "ariaLabel": "Twin-engine jet descending",
+                "imgAlt": "Miniatura de video generada",
+                "preview": "play_circle",
+            },
+            *[{**t, "idx": t["idx"] + 1} for t in before],
+            {
+                "idx": 3,
+                "isGridTile": False,
+                "isGenerating": False,
+                "isReady": True,
+                "isError": False,
+                "videoSrc": "",
+                "imgSrc": "https://storage.googleapis.com/ai-sandbox-videofx/image/NEW_CHAT",
+                "ariaLabel": "Galería de opciones de contenido multimedia",
+                "imgAlt": "Prompt nuevo",
+                "preview": "play_circle",
+            },
+        ]
+        new_tiles = flow_generator._select_new_or_changed_tiles(before, current)
+        self.assertEqual([t["idx"] for t in new_tiles], [0, 3])
+        self.assertEqual(flow_generator._pick_ready_tile_idx(new_tiles, current), 0)
+
+        # Even if two tiles had identical empty signatures, multiplicity still exposes the excess tile
+        dup_before = [{"idx": 0, "isGridTile": True, "isGenerating": False, "isReady": True, "isError": False, "videoSrc": "", "imgSrc": "", "ariaLabel": "", "imgAlt": "", "preview": "play_circle"}]
+        dup_current = [
+            {"idx": 0, "isGridTile": True, "isGenerating": False, "isReady": True, "isError": False, "videoSrc": "", "imgSrc": "", "ariaLabel": "", "imgAlt": "", "preview": "play_circle"},
+            {"idx": 1, "isGridTile": True, "isGenerating": False, "isReady": True, "isError": False, "videoSrc": "", "imgSrc": "", "ariaLabel": "", "imgAlt": "", "preview": "play_circle"},
+        ]
+        dup_new = flow_generator._select_new_or_changed_tiles(dup_before, dup_current)
+        self.assertEqual(len(dup_new), 1)
+        self.assertEqual(flow_generator._pick_ready_tile_idx(dup_new, dup_current), 0)
+
+        self.assertEqual(
+            flow_generator.classify_flow_body_status(
+                "Generating this video requires 7 credits, but you currently have 3 credits remaining (refreshes on 2026-11-29 19:44 UTC)."
+            ),
+            "quota_limit",
+        )
+        self.assertEqual(
+            flow_generator.classify_flow_body_status("Upgrade / Top up credits\nWait for credits to refresh"),
+            "quota_limit",
+        )
+        self.assertIsNone(
+            flow_generator.classify_flow_body_status("Te quedan pocos puntos de Google Flow. Tus puntos se restablecerán cada mes.")
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
