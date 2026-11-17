@@ -1561,7 +1561,7 @@ def assemble_final_video(
     ass_bytes = ass_path.read_bytes() if ass_path.exists() else b""
     badge_bytes = badge_png.read_bytes() if has_badge and badge_png.exists() else b""
     master_hash = hashlib.sha256(
-        f"{curr_hash}|{audio_hash}|{source_name}|{genre}|safezone_v3".encode("utf-8") + ass_bytes + badge_bytes
+        f"{curr_hash}|{audio_hash}|{source_name}|{genre}|safezone_v4".encode("utf-8") + ass_bytes + badge_bytes
     ).hexdigest()[:16]
 
     master_cached = False
@@ -1599,7 +1599,8 @@ def assemble_final_video(
                 "-map", "1:a:0",
                 "-t", f"{total_dur:.3f}",
                 "-r", "24",
-                "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "18",
+                "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-preset", "medium",
+                "-crf", "20", "-maxrate", "5500k", "-bufsize", "11000k",
                 "-c:a", "copy",
                 "-movflags", "+faststart",
                 str(final_mp4),
@@ -1614,7 +1615,8 @@ def assemble_final_video(
                 "-map", "1:a:0",
                 "-t", f"{total_dur:.3f}",
                 "-r", "24",
-                "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "18",
+                "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-preset", "medium",
+                "-crf", "20", "-maxrate", "5500k", "-bufsize", "11000k",
                 "-c:a", "copy",
                 "-movflags", "+faststart",
                 str(final_mp4),
