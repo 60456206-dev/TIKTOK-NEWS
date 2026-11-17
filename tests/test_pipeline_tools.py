@@ -647,6 +647,32 @@ class TestRenderAndSyncUpgrades(unittest.TestCase):
             flow_generator.classify_flow_body_status("Te quedan pocos puntos de Google Flow. Tus puntos se restablecerán cada mes.")
         )
 
+    def test_generate_kinetic_ass_silencedetect_avoids_one_frame_flashes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            voice = d / "voice.mp3"
+            voice.write_bytes(b"fake")
+            ass_path = d / "SUBTITULOS_KINETIC.ass"
+            script = " ".join([f"palabra{i}" for i in range(1, 31)])
+            fake_blocks = [(0.10, 4.02), (4.50, 8.95), (9.45, 14.00)]
+            with mock.patch.object(ensamblador_final, "extract_acoustic_speech_blocks", return_value=fake_blocks):
+                ensamblador_final.generate_kinetic_ass(
+                    script,
+                    total_duration=14.2,
+                    ass_path=ass_path,
+                    source_name="Aviation24",
+                    voice_audio=voice,
+                )
+            lines = [ln for ln in ass_path.read_text(encoding="utf-8").splitlines() if "CapCutBouncing" in ln and ln.startswith("Dialogue:")]
+            self.assertGreaterEqual(len(lines), 10)
+            def _to_sec(ts: str) -> float:
+                h, m, s = ts.split(":")
+                return int(h) * 3600 + int(m) * 60 + float(s)
+            for ln in lines:
+                parts = ln.split(",", 4)
+                dur = _to_sec(parts[2]) - _to_sec(parts[1])
+                self.assertGreaterEqual(dur, 0.30, f"Subtitle flash too short: {ln}")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
