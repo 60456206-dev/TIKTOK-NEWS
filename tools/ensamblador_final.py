@@ -495,7 +495,7 @@ def generate_verified_source_card(source_name: str, genre: str, out_png: Path) -
 
     # Nivel 1 (Superior): Píldora de verificación + Rótulo institucional
     draw.rounded_rectangle([(24, 16), (264, 52)], radius=10, fill=tag_bg)
-    draw.text((38, 24), "✓ FUENTE VERIFICADA", font=f_badge, fill=(255, 255, 255))
+    draw.text((38, 24), "• FUENTE VERIFICADA", font=f_badge, fill=(255, 255, 255))
     draw.text((284, 24), "AUDITORÍA INFORMATIVA · RADAR 24/7", font=f_badge, fill=(205, 218, 235))
 
     # Nivel 2 (Medio): Nombre grande de la fuente / foro oficial
@@ -1559,8 +1559,9 @@ def assemble_final_video(
     final_mp4 = delivery_dir / "NOTICIERO_FINAL_62S.mp4"
     master_manifest_path = work_dir / "master_cache_manifest.json"
     ass_bytes = ass_path.read_bytes() if ass_path.exists() else b""
+    badge_bytes = badge_png.read_bytes() if has_badge and badge_png.exists() else b""
     master_hash = hashlib.sha256(
-        f"{curr_hash}|{audio_hash}|{source_name}|{genre}|safezone_v2".encode("utf-8") + ass_bytes
+        f"{curr_hash}|{audio_hash}|{source_name}|{genre}|safezone_v3".encode("utf-8") + ass_bytes + badge_bytes
     ).hexdigest()[:16]
 
     master_cached = False
