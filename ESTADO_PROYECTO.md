@@ -1,13 +1,335 @@
 # Dónde nos quedamos
 
-Actualizado: 2026-11-16.
+Actualizado: 2026-11-19.
 
-## Sincronización Integral en AWS (`ubuntu@77.113.75.243`) · Remotion Broadcast, Rotación Multi-Cuenta Flow, QC Guard y Bot Blindado · 2026-11-16
+## Estándar Veritasium en `TIKTOK_RADAR` (Bloques 1–3) + APIs de Estudio y 3er Encuadre en `PERSONAJE_HIPERREALISTA` (Bloque 4) · 2026-11-19
 
-- **Despliegue y Sincronización Solicitada por el Usuario**:
-  - Sincronizados todos los módulos de `TIKTOK_RADAR` (2026-11-11 al 2026-11-16) hacia `STANDALONE_TIKTOK_RADAR` (`TIKTOK-NEWS.git`) y el servidor AWS (`ubuntu@77.113.75.243`).
-  - Incluye: rotación secuencial automática multi-cuenta en Google Flow (`flow_generator.py`, `iniciar_flow_perfil.sh`, `test_flow_session.py --all`, `~/.flow_profiles_state.json`), suite Remotion React de 6 composiciones Veritasium (`motion_engine/` + `render_batch.mjs` + `remotion_renderer.py`), fuentes `Montserrat` empaquetadas, métricas reales de noticia, `WordBoundary` + `pysubs2`, masterización EBU R128 de 2 pasadas, caché modular NLE, `video_qc_inspector.py`, bloqueo automático de entrega en WhatsApp si QC marca `FAIL` (`ejecutar_todo.py`), `bot_helpers.js` y tests unitarios (`28/28 OK` + `7/7 pass`).
-  - La producción automática en `cron` permanece pausada hasta nueva orden para proteger los créditos de Google Flow.
+- **Pacto e Instrucción Directa del Usuario:**
+  - Mantener `TIKTOK_RADAR` 100% editorial faceless (estándar Veritasium / Vox / Johnny Harris) sincronizado en [`STANDALONE_TIKTOK_RADAR`](file:///workspaces/PRUEBA-CLI/STANDALONE_TIKTOK_RADAR), mantener `PERSONAJE_HIPERREALISTA` como pipeline independiente con conectores API de estudio listos para activar mediante variables de entorno, y trabajar **solo en local** (sin `commit`/`push` ni despliegue AWS hasta nueva orden).
+- **Cambios Implementados (Locales en `TIKTOK_RADAR/`, sincronizados en `STANDALONE_TIKTOK_RADAR/` y en `PERSONAJE_HIPERREALISTA/`):**
+  1. **`TIKTOK_RADAR` · Ingesta completa, Guion Veritasium y Beat Sheet Audio-First ([`news_radar.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/news_radar.py), [`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py), [`editorial_director.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/editorial_director.py)):**
+     - Descarga y limpieza HTML pura stdlib del artículo completo (`extract_article_text_from_html`, `extract_verified_receipt_facts`, `fetch_full_article_context`, `enrich_news_item`) inyectada en el guion Misconception-First y en `story_metrics`.
+     - `build_narrative_beat_sheet()` segmenta el guion en ~16–18 beats con `>= 75%` hard cuts (dissolves solo entre actos), `punch_in` de clips Flow sin consumo extra de créditos y `music_drop` único; `generate_dynamic_news_script()` calibrado a `61–65s` con fallback neutro y manejo de respuestas cortas.
+  2. **`TIKTOK_RADAR` · Timeline Audio-First, Music Drop, SFX diegéticos y ElevenLabs ([`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py), [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json), [`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py)):**
+     - Conector `generate_speech_elevenlabs()` (`/with-timestamps` + `_alignment_chars_to_word_boundaries`) y paleta SFX diegética en [`audio_assets/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/audio_assets/) (`SFX_PAPER_FLIP.wav`, `SFX_HIGHLIGHTER_SWIPE.wav`, `SFX_TECH_CLICK.wav`).
+     - Eliminado `HookPill` (`• ÚLTIMA HORA`) y el shake sintético `7.5 Hz`; añadidos `align_beats_to_audio()`, `build_editorial_timeline_video()`, atenuación musical en `music_drop_window` (`eval=frame`) y ventana sin colisión para `source_badge.png`.
+  3. **`TIKTOK_RADAR` · `Editorial25DReceipt`, Guard Cuantitativo y Portada Minimalista ([`Editorial25DReceipt.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DReceipt.tsx), [`Editorial25DFactSheet.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DFactSheet.tsx), [`Editorial25DDiagram.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DDiagram.tsx), [`Root.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Root.tsx), [`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py), [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py), [`flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py)):**
+     - Nuevo `Editorial25DReceipt` en papel archival 2.5D con resaltado amarillo multi-línea (`WebkitBoxDecorationBreak: "clone"`); guard `hasNumericPair` en `Editorial25DFactSheet` (cero barras porcentuales sin cifras); keyframes adaptativos y wrap de callouts en `Editorial25DDiagram` para beats cortos (`3–4s`); portada de brecha de curiosidad sin rótulos redundantes y ancla de estilo Flow (`FLOW_STYLE_ANCHOR.jpg`).
+  4. **`PERSONAJE_HIPERREALISTA` · Conectores API de Estudio, Métrica Estructural, Zero Texture Sticking y 3er Encuadre ([`studio_api_client.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/studio_api_client.py), [`motor_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/motor_personaje.py), [`genjutsu_video_engine.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/genjutsu_video_engine.py), [`audio_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/audio_personaje.py), [`pipeline_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/pipeline_personaje.py), [`config_personaje.json`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/config_personaje.json)):**
+     - Reparado *texture sticking* en `genjutsu_video_engine.py` con cap `maxrate 12M`; añadidos `_compute_structural_face_descriptor` + `_try_extract_insightface_embedding` en `motor_personaje.py`; implementados `ElevenLabsStudioClient`, `FalStudioAvatarClient` (`fal_omnihuman` / `fal_kling_avatar`) y `HeyGenAvatarIVClient` con CLI `--studio-lipsync`, `--framing {close,medium}`, `--prefer-elevenlabs` y `--public-audio-url`.
+     - Generados y **revisados visualmente**: [`KF3_PLANO_MEDIO_EXPLICANDO_50MM.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/03_character_sheet/KF3_PLANO_MEDIO_EXPLICANDO_50MM.jpg) y [`HOJA_CONTINUIDAD_3_ENCUADRES.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/03_character_sheet/HOJA_CONTINUIDAD_3_ENCUADRES.jpg) (regenerada con pie limpio en 3 líneas sin solapes; Poros `17.545` / `15.639` / `13.206`, ProxyEst `100.00%` / `86.15%` / `99.04%`).
+- **Verificación Técnica, Visual y E2E Ejecutada:**
+  - **Pruebas unitarias y compilación:** `40/40 OK` ([`test_pipeline_tools.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tests/test_pipeline_tools.py)), `7/7 pass` (`test_bot_helpers.test.js`), `10/10 OK` ([`test_personaje_pipeline.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tests/test_personaje_pipeline.py), limpiados `TEST_CHAR_*` de `02_adn_biometrico/`), `11/11` composiciones Remotion compiladas, `pipeline_personaje.py --preflight-only` `"ready": true` y `diff -rq` limpio entre `TIKTOK_RADAR/` y `STANDALONE_TIKTOK_RADAR/`.
+  - **Stills y E2E aislado `e2e_veritasium_v2` (`SLOT_1`, `--skip-flow`, sobre *Three killed in Piper Comanche crash at Grand Canyon*):** guion `gemini-3.5-flash-lite` de `134` palabras (`61.63s` audio / `61.67s` MP4), **`1080x1920 @ 24.0 fps`**, `18.73 MB`, **`-14.0 LUFS`**, Peak **`-1.0 dBTP`**, `0` frozen / `0` negros / `0` silencios, `max_sync_delta_sec: 0.111s`, `18` beats (`14/17` = `82.4%` hard cuts), `HookPill` ausente, `SH03 -> Editorial25DReceipt`, Music Drop **`-32.57 dB`**, **`Score: 100/100`** (`WARN` únicamente por 8 planos Flow ausentes en modo `--skip-flow`). Revisados visualmente [`receipt_check.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/b4df5fc8-3523-48d1-a2de-eff73434f8c1/scratch/stills/receipt_check.jpg), [`factsheet_nobars_check.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/b4df5fc8-3523-48d1-a2de-eff73434f8c1/scratch/stills/factsheet_nobars_check.jpg), [`PORTADA_TIKTOK_916.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/b4df5fc8-3523-48d1-a2de-eff73434f8c1/scratch/e2e_veritasium_v2/2026-11-19_AVIACION/PORTADA_TIKTOK_916.jpg), [`CONTACT_SHEET_QC.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/b4df5fc8-3523-48d1-a2de-eff73434f8c1/scratch/e2e_veritasium_v2/2026-11-19_AVIACION/CONTACT_SHEET_QC.jpg) y fotogramas `f_hook.jpg`–`f_outro.jpg`.
+  - **Recomendación sobre el vídeo E2E (`e2e_veritasium_v2/NOTICIERO_FINAL_62S.mp4`):** conservar la prueba en `scratch/` como validación técnica aprobada (no publicar directamente porque usa `--skip-flow` con 8 placas fallback); generar los 8 clips reales en Google Flow al encender AWS para producción final.
+- **Pendiente:**
+  - Añadir claves API opcionales (`ELEVENLABS_API_KEY`, `FAL_KEY`, `HEYGEN_API_KEY`) en `.env` / `~/.api_keys.env` si se desean probar en vivo; hacer `commit`/`push` y desplegar en AWS únicamente cuando el usuario lo ordene.
+
+## Integración Completa del Estilo Editorial 2.5D y Director Visual Dinámico en `TIKTOK_RADAR` · 2026-11-18
+
+- **Pacto e Instrucción Directa del Usuario:**
+  - Continuar conectando la nueva línea visual **editorial 2.5D táctil** (sin cajas UI de dashboard, sin textos `"VERITASIUM"` ni métricas falsas) al pipeline principal, hacer dinámicos los prompts por noticia real y sincronizar con [`STANDALONE_TIKTOK_RADAR`](file:///workspaces/PRUEBA-CLI/STANDALONE_TIKTOK_RADAR).
+- **Módulos Creados / Actualizados (Locales en `TIKTOK_RADAR/` y sincronizados en `STANDALONE_TIKTOK_RADAR/`):**
+  1. **Suite Remotion Editorial 2.5D ([`motion_engine/src/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/)):**
+     - [`TactilePaperStage.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/components/TactilePaperStage.tsx): mesa de estudio claroscuro, textura de papel/grano orgánico, motas ambientales, `DeckledPaperCutout` y `EditorialHeadline` compartido en Safe Zone (`top: 214px`, `left: 68px`, `width: 820px`).
+     - [`Editorial25DMap.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DMap.tsx): soporta modos `"diversion"`, `"route"` y `"epicenter"` e iconos (`"plane"`, `"rocket"`, `"pulse"`, `"chip"`) con cartografía offline (`d3-geo` + `world-atlas/countries-50m.json`), sujeción de etiquetas en Safe Zone y ficha de papel archival en paralaje.
+     - [`Editorial25DDiagram.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DDiagram.tsx): croquis 2.5D progresivo parametrizado por `diagramKind` (`"aircraft"`, `"chip"`, `"network"`, `"spacecraft"`, `"seismic"`) y cinta inferior en papel rasgado.
+     - [`Editorial25DFactSheet.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DFactSheet.tsx) y [`Editorial25DOutro.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Editorial25DOutro.tsx): reemplazan las tarjetas `VeritasiumStatComparison` y `VeritasiumDocumentaryOutro` por láminas de papel archival en perspectiva 2.5D (`mode: "metric" | "comparison"` y nota de cierre sin marca ajena).
+     - [`Root.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Root.tsx): registra las 4 composiciones `Editorial25D*` con `defaultProps` neutros (sin fugas de datos de noticias anteriores) y conserva alias legados.
+  2. **Director Visual Dinámico y Resolución Geográfica ([`editorial_director.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/editorial_director.py), [`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py), [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json)):**
+     - `STYLE_PREFIX` y anclas visuales migradas a **ilustración editorial 2.5D / claroscuro táctil** (eliminando `"Stylized 3D"` y `"Veritasium"`).
+     - `resolve_geo_context()` + `build_dynamic_story_visuals()` (Gemini JSON con fallback determinista fiel a la noticia) generan los **8 prompts de Flow** anclados al hecho real (sin jets privados ni barcos de rescate inventados) y los **5 paquetes `Editorial25D*`** en español; guion recalibrado a `134–145` palabras (`condense` si `>147`) con trato `usted`.
+  3. **Enrutamiento, Safe Zone, Portada y Ensamblado ([`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py), [`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py), [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py)):**
+     - `get_composition_for_genre()` y `get_composition_for_shot()` enrutan por defecto a `Editorial25DMap`, `Editorial25DFactSheet`, `Editorial25DDiagram` y `Editorial25DOutro`.
+     - Eliminada la colisión de cajas apiladas al inicio: `HookPill` compacto (`MarginV=152`, `0..3.6s`), `CapCutBouncing` acotado a Safe Zone derecha (`MarginL=65, MarginR=170, MarginV=560`) y `source_badge.png` compacto (`760x88`) trasladado sobre `SH02` (`4.35..8.45s`). Portada `PORTADA_TIKTOK_916.jpg` limpia con scrim suave (sin marco naranja sobre la ilustración).
+- **Verificación Técnica, Visual y E2E Ejecutada:**
+  - **Prueba E2E aislada (`e2e_editorial_25d_test_v2/` sobre vuelo Thai Airways TG925 Múnich–Bangkok–Nueva Delhi):** guion `144` palabras, audio `es-CR-JuanNeural` (`rate=-4%`) de **`64.42s`**, **`1080x1920 @ 24 fps`**, **`-14.0 LUFS`**, Peak **`-1.0 dBTP`**, `0` frames congelados / `0` negros / `0` silencios, **`Score: 100/100`** (`WARN` solo por `--skip-flow`), con revisión visual de [`CONTACT_SHEET_QC.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/6eef9817-f82c-405d-803f-3bc0a2bd2929/scratch/e2e_editorial_25d_test_v2/CONTACT_SHEET_QC.jpg), [`PORTADA_TIKTOK_916.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/6eef9817-f82c-405d-803f-3bc0a2bd2929/scratch/e2e_editorial_25d_test_v2/PORTADA_TIKTOK_916.jpg) y fotogramas Safe Zone (`frame_02.8.jpg`–`frame_59.5.jpg`), más fotogramas finales tras el último ajuste ([`map_stamp_fix.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/6eef9817-f82c-405d-803f-3bc0a2bd2929/scratch/stills_check/map_stamp_fix.jpg), [`factsheet_compare_fix.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/6eef9817-f82c-405d-803f-3bc0a2bd2929/scratch/stills_check/factsheet_compare_fix.jpg)).
+  - **Paridad y pruebas:** `diff -rq` limpio entre `TIKTOK_RADAR/` y `STANDALONE_TIKTOK_RADAR/`, `34/34 OK` en [`test_pipeline_tools.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tests/test_pipeline_tools.py), `7/7 pass` en `test_bot_helpers.test.js` y `remotion compositions` (`10/10`) sin errores.
+- **Pendiente:**
+  - Servidor AWS apagado por acuerdo previo; cambios listos en local (`TIKTOK_RADAR/` y `STANDALONE_TIKTOK_RADAR/`) sin `commit`/`push` ni despliegue remoto hasta nueva orden del usuario (y prueba con 8 clips reales de Google Flow al encender AWS).
+
+## Prototipo Visual 2.5D Editorial en Remotion (`Editorial25DMap` y `Editorial25DDiagram`) · 2026-11-17
+
+- **Resumen previo (ya integrado arriba):** prototipo inicial verificado en [`editorial_25d_demo/`](file:///home/vscode/.gemini/antigravity-cli/brain/eba9710e-4a3e-4b90-a726-3aa268ef09a5/scratch/editorial_25d_demo/) y conectado definitivamente al pipeline el 2026-11-18.
+
+## Locución Costarricense de Rapidez Moderada e Inteligibilidad (`es-CR-JuanNeural`) en TikTok Radar · 2026-11-17
+
+- **Pacto e Instrucción Directa del Usuario:**
+  - Corregir el renderizado de `TIKTOK_RADAR` para que la locución tenga **rapidez moderada**, sea **más entendible** y mantenga un acento **netamente costarricense** (`es-CR`).
+- **Ajustes Implementados y Verificados (Locales en `TIKTOK_RADAR/` y sincronizados en `STANDALONE_TIKTOK_RADAR/`):**
+  1. [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json) (`locucion`): configurado `motor_principal: "edge_tts"`, `voz_edge: "es-CR-JuanNeural"` (nativa `es-CR`), `rate_edge: "-4%"`, `pitch_edge: "+0Hz"` (timbre más natural, brillante y entendible que `-8%`/`-1Hz`), `voz_gemini_fallback: "Orus"`, `tighten_silencios: false` y `palabras_objetivo: "136-148"`.
+  2. [`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py): reemplazada la voz mexicana acelerada (`es-MX-JorgeNeural` con `rate="+12%"`) y el estilo acelerado de Gemini (`Fenrir`) por `es-CR-JuanNeural` a rapidez moderada (`rate="-4%"`, `pitch="+0Hz"`) como motor principal (con `WordBoundary` exacto al milisegundo), `_run_coro_sync` seguro dentro de event loops activos, limpieza previa de `WORD_BOUNDARIES.json`/`SENTENCE_BOUNDARIES.json`, soporte `.wav`/`.mp3`, desactivado `auto-editor` por defecto (`tighten=False`) para conservar pausas naturales y fallback Gemini `Orus` con dirección costarricense de rapidez moderada y dicción entendible (`DEFAULT_COSTA_RICA_STYLE`).
+  3. [`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py): guion recalibrado a `136–148` palabras (con condensación automática a `138–146` si supera `152` palabras) y reglas de legibilidad para voz (sin pares con guion tipo `Múnich-Bangkok`, puntuación clara y trato `usted`/`ustedes` costarricense), lectura de `locucion` desde `config_produccion.json`, ajuste `atempo` suavizado a `max(0.92, dur / 61.6)` y registro de `voice_profile` en `metadata.json`.
+  4. [`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py): cadena de inteligibilidad vocal (`highpass=f=90`, `equalizer=f=3000:width_type=q:w=1.2:g=2.5`), stems de música Epidemic Sound más suaves bajo la voz (`volume=0.72` bajos / `0.62` instrumentos) con `sidechaincompress` más firme (`threshold=0.18:ratio=2.5:attack=15:release=240`) y actualización de `master_hash` (`safezone_v4_eq3`).
+  5. **Pruebas y escucha real verificadas:** `32/32 OK` en [`test_pipeline_tools.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tests/test_pipeline_tools.py) (incluidos 2 tests nuevos de locución `es-CR`, loop activo y condensación), `7/7 pass` en [`test_bot_helpers.test.js`](file:///workspaces/PRUEBA-CLI/STANDALONE_TIKTOK_RADAR/tests/test_bot_helpers.test.js), y prueba en vivo (`/tmp/test_cr_e2e_v4/`: `147 palabras` -> `68.06s`, `129.6 WPM` en `es-CR-JuanNeural | rate=-4%`) escuchada directamente junto con mezcla `-14.0 LUFS` (`LRA: 1.9 LU`, pico `-1.0 dBFS`).
+- **Pendiente:**
+  - Por acuerdo del usuario, el servidor AWS está apagado y los cambios de locución (`es-CR-JuanNeural`) quedan en local sin `commit`/`push` por ahora (hasta nueva orden, junto con el visto bueno final del audio / despliegue en AWS).
+
+## Producción `SLOT_1` (Aviación) Completada y Enviada + Correcciones en Flow/Remotion/NLE/WhatsApp · 2026-11-17
+
+- **Entrega Generada, Revisada Visualmente, Auditada (`PASS 100/100`) y Enviada por WhatsApp (`/home/ubuntu/TIKTOK-NEWS/entregas/2026-11-17_AVIACION` en AWS)**:
+  - **Noticia y duración:** *Airbus A350 de Thai Airways (vuelo TG925 Múnich–Bangkok) se desvía de emergencia a Nueva Delhi* (`Aviation24 Global`), locución calibrada a **`63.43s`** (`>60s` monetizable).
+  - **Planos completos (`13/13`):** **`8/8` Google Flow** (`SH02`, `SH04`, `SH05`, `SH06`, `SH07`, `SH08`, `SH09`, `SH12`, con rotación multi-cuenta `flow-profile` → `cuenta_2` → `cuenta_3`) + **`5/5` Remotion React** (`SH01`, `SH03`, `SH10`, `SH11`, `SH13`) con props contextualizados en español.
+  - **Máster y QC (`PASS`, `Score: 100/100`):** `NOTICIERO_FINAL_62S.mp4` (`1080×1920 @ 24.0 fps`, `63.46s`, `34.0 MB`, `4494.4 kbps`, `-14.0 LUFS`, True Peak `-1.0 dBTP`, `0` frames congelados, `0` negros, `0` silencios, `0` advertencias).
+  - **Inspección visual y envío:** revisados [CONTACT_SHEET_QC.jpg](file:///home/vscode/.gemini/antigravity-cli/brain/ae6d4cba-f6b6-49e8-8da2-c6d6fb88cd98/scratch/entrega_2026_11_17_final/CONTACT_SHEET_QC.jpg), [PORTADA_TIKTOK_916.jpg](file:///home/vscode/.gemini/antigravity-cli/brain/ae6d4cba-f6b6-49e8-8da2-c6d6fb88cd98/scratch/entrega_2026_11_17_final/PORTADA_TIKTOK_916.jpg) (*«AVIÓN / GIRA EN / SECO»*) y fotogramas Safe Zone (`v3_01.5`–`v3_59.0`); paquete completo (portada + vídeo `34.0 MB` + hashtags) enviado por WhatsApp (`HTTP 200`, `doc=false`); queda **pendiente de aceptación final del usuario** tras revisarlo en su teléfono.
+  - **Estado de cuentas Flow en AWS (`~/.flow_profiles_state.json`):** `flow-profile` y `cuenta_2` en cooldown `12h` por créditos agotados; **`cuenta_3` y `cuenta_4` disponibles** (`cooldown_until: 0.0`). `crontab` mantenido pausado según acuerdo previo.
+
+- **Correcciones Permanentes Aplicadas y Verificadas (`30/30 OK` en `unittest`, `7/7 pass` en `bot_helpers`, desplegadas en `TIKTOK-NEWS.git` `e9bd829` -> AWS):**
+  1. [`flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py): firma de tiles (`_tile_signature`, `_select_new_or_changed_tiles`, `_pick_ready_tile_idx`) para distinguir clips completados aunque compartan `play_circle` sin `<video src>`, y `classify_flow_body_status()` para detectar `"requires X credits ... credits remaining"` / `"Wait for credits to refresh"` y rotar sin demoras.
+  2. **Safe Zone 100% en las 6 composiciones Remotion ([`motion_engine/src/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/))**: tarjetas reducidas a `830px` (`x=45..915`, `y=250..1180`) para no invadir los botones derechos de TikTok ni solapar subtítulos abajo.
+  3. [`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py): `-loop 1 -t 6.0` + bullet `• FUENTE VERIFICADA` en `source_badge.png` (antes invisible/con glifo faltante), asignación de subtítulos `silencedetect` sin flashes de 1 fotograma (`min >= 0.41s`), y codificación final `-crf 20 -maxrate 5500k` (~`34 MB`).
+  4. [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py) y [`bot.js`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/whatsapp_bot/bot.js): regla anti-alucinación en titulares de portada, heap Chrome `1024 MB` y envío automático como documento si un vídeo supera `48 MB`.
+
+## Sincronización Completa con Servidor AWS (`ubuntu@77.113.75.243`) y Rotación Secuencial Flow · 2026-11-16
+
+- **4 Cuentas de Google Flow Vinculadas y Verificadas en AWS (`4/4` activas)**:
+  - Perfiles vinculados y verificados en vivo con `python3 tools/test_flow_session.py --all` y `bash ~/iniciar_flow_perfil.sh --listar`:
+    1. `/home/ubuntu/flow-profile` (`DISPONIBLE`, perfil principal `F`).
+    2. `/home/ubuntu/flow-profiles/cuenta_2` (`DISPONIBLE`, perfil `M`).
+    3. `/home/ubuntu/flow-profiles/cuenta_3` (`DISPONIBLE`, perfil `R`).
+    4. `/home/ubuntu/flow-profiles/cuenta_4` (`DISPONIBLE`, perfil `J`; nota visual: muestra una insignia amarilla `!` en el avatar de Google aunque Flow carga con normalidad).
+  - Revisión visual de las capturas detectó que `cuenta_2` y `cuenta_3` muestran el botón `+ Proyecto nuevo` (es-419) en lugar de `+ Nuevo proyecto`. Se actualizó [`flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py#L299-L312) (`ensure_inside_flow_project`) para aceptar también `'proyecto nuevo'` y `'create with flow'`, verificado con `28/28 OK` locales y desplegado en `TIKTOK-NEWS.git` (`85ececb`) -> `~/TIKTOK-NEWS` en AWS.
+  - Sesión temporal de escritorio VNC en AWS (`Xtigervnc :42`) y túnel SSH/noVNC (`6080`/`5942`) cerrados limpiamente tras terminar la vinculación.
+
+- **Rotación Secuencial Automática Multi-Cuenta en Google Flow**:
+  - Implementada en [`flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py) (`resolve_flow_profiles`, `select_available_profiles`, `mark_profile_state`, `_run_single_profile_session`), [`config_produccion.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/config_produccion.json) (`google_flow.rotacion_secuencial`, `cooldown_cuota_horas: 12`), [`iniciar_flow_perfil.sh`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/iniciar_flow_perfil.sh) y [`test_flow_session.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/test_flow_session.py) (`--all` / `--profile`).
+  - Detecta automáticamente `~/flow-profile` + `~/flow-profiles/*` (o `FLOW_PROFILE_DIRS`). Si una cuenta agota ambos modelos (`Omni 1.1 Flash` y `Veo 3.1 - Lite`) o expira su sesión, registra su cooldown en `~/.flow_profiles_state.json`, cierra el navegador y continúa en la siguiente cuenta desde el plano pendiente exacto.
+  - Verificada con tests nuevos en [`test_pipeline_tools.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tests/test_pipeline_tools.py) (`28/28 OK` y `7/7 pass`).
+
+- **Despliegue y Sincronización Verificados en Vivo en AWS (`ubuntu@77.113.75.243`)**:
+  - **`TIKTOK_RADAR` -> [`STANDALONE_TIKTOK_RADAR`](file:///workspaces/PRUEBA-CLI/STANDALONE_TIKTOK_RADAR) -> `TIKTOK-NEWS.git` (`48a2ba7`) -> `~/TIKTOK-NEWS` en AWS**:
+    - Sincronizados todos los módulos pendientes del 2026-11-11 al 2026-11-13 (`motion_engine/`, `remotion_renderer.py`, `video_qc_inspector.py`, `ensamblador_final.py`, `pipeline_autonomo.py`, `audio_generator.py`, `flow_generator.py`, `generador_portada.py`, `news_radar.py`, `ejecutar_todo.py`, `whatsapp_monitor.py`, `bot.js`, `bot_helpers.js`, `tests/`, `crontab_2videos_peru.tab`).
+    - Instalados en AWS `fonts-montserrat`, paquetes Python (`pysubs2`, `numpy`, `auto-editor`, `aiohttp`, `edge-tts`, `Pillow`, `playwright`), dependencias npm de Remotion (`244` paquetes) y `Chrome Headless Shell` (6 composiciones verificadas).
+    - Reiniciado `tiktok-whatsapp-bot.service` (`active`) y verificado bot conectado (`{"ready":true,"owner":"26014734409817@lid","bot":"51902893413@c.us","hasQR":false}`).
+    - Tests ejecutados en AWS: **`7/7` pass** (`test_bot_helpers.test.js`) y **`26/26` OK** (`unittest`).
+    - `crontab` mantenido pausado (`no crontab for ubuntu`) hasta nueva orden para proteger créditos de Flow; entregas previas y `.env` preservados intactos.
+  - **`PERSONAJE_HIPERREALISTA` -> `~/PERSONAJE_HIPERREALISTA` en AWS**:
+    - Añadido autocargador `load_env_keys()` en [`motor_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/motor_personaje.py) para leer `~/.api_keys.env` en AWS, y copiado el proyecto junto con los 5 assets WAV en `04_motor_video_voz/assets/`.
+    - Verificados en AWS `--preflight-only` (`ready: true`, `tts_primary: "gemini"`) y **`7/7` OK** en `test_personaje_pipeline.py`.
+
+## `PERSONAJE_HIPERREALISTA`: Pipeline Completo Listo para Pruebas (Voz + SFX Genjutsu + Restauración I2V + QC) · 2026-11-16
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Preparar todo el frente de `PERSONAJE_HIPERREALISTA` (Candidato C) para generar la primera prueba audiovisual (`KF1 -> KF2` con voz, SFX Genjutsu, subtítulos y paquete I2V) sin errores.
+- **Módulos Creados / Actualizados y Verificados**:
+  1. [`config_personaje.json`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/config_personaje.json) y [`motor_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/motor_personaje.py): configuración central de Candidato C y medición biométrica en memoria (`measure_frame_biometrics`).
+  2. [`audio_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/audio_personaje.py): locución bi-fase (`[GENJUTSU]`) con `Gemini 3.8 Flash TTS` (`Puck`, fallback automático a `Edge-TTS`), recorte limpio de silencios en bordes, SFX sintetizado [`SFX_GENJUTSU_FRACTURE.wav`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/assets/SFX_GENJUTSU_FRACTURE.wav) + riser/boom/foley/cama duckeada, y masterización EBU R128 en 2 pasadas (`-14.0 LUFS` / `-1.0 dBTP`).
+  3. [`genjutsu_video_engine.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/genjutsu_video_engine.py): corregida ejecución directa, optimizada separación de frecuencias (`compute_high_frequency_band` / `apply_high_frequency_band`), fractura óptica sincronizada al `cue_sec` real, muxing de audio/ASS y modo `--input-video` (`process_i2v_video_with_pore_restoration`) para clips de Flow/Kling/Hallo2/LivePortrait.
+  4. [`pipeline_personaje.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/pipeline_personaje.py) y [`README.md`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/README.md): chequeo `--preflight-only`, subtítulos Kinetic ASS en `Montserrat Black` aislados por acto/pausa (sin cruzar el corte Genjutsu), exportación automática de `I2V_PACK/` y auditoría QC técnica + biométrica (`QC_REPORT.json` + `CONTACT_SHEET_PERSONAJE.jpg`).
+  5. **Tests ([`test_personaje_pipeline.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tests/test_personaje_pipeline.py))**: `7/7 OK` (`unittest`) cubriendo preflight, guion 2 actos, SFX, mezcla `-14 LUFS`, ASS + escape FFmpeg, recuperación de poros y flujo `--input-video` E2E + QC.
+- **Primera Prueba Generada y Revisada Visualmente ([`PRUEBA_01_GENJUTSU/`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/))**:
+  - Vídeo preview: [`PRUEBA_01_LOCAL_PREVIEW_CRF16.mp4`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/PRUEBA_01_LOCAL_PREVIEW_CRF16.mp4) (`1080×1920 @ 24.0 fps`, `11.49s`, `56.39 MB`, `H.264 High CRF 16`, voz `gemini:Puck`, `-14.44 LUFS`, True Peak `-1.01 dBTP`).
+  - **Inspección visual y QC (`PASS`, 0 errores, 0 avisos)**: revisados [`CONTACT_SHEET_PERSONAJE.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/CONTACT_SHEET_PERSONAJE.jpg) y el fotograma de fractura en `t=5.88s`; poros preservados (`17.42–17.49` Acto 1; `13.15–13.24` Acto 2), similitud ADN (`87.2%` / `77.8%`), fractura cromática limpia sin subtítulos tapando el corte, y subtítulos de Acto 2 legibles en coral-carmesí luminoso.
+  - **Paquete I2V / Lip-Sync listo**: [`I2V_PACK/`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/I2V_PACK/) con `01_KF1_FIRST_FRAME.jpg`, `02_KF2_LAST_FRAME.jpg`, `03_VOZ_LIMPIA_PARA_LIPSYNC.wav`, `04_AUDIO_MASTER_FINAL.wav` y `05_PROMPTS_FLOW_Y_LIPSYNC.json`.
+  - **Limitación de entorno verificada**: este Codespace es solo CPU (`2 vCPU`, `7.8 GB RAM`, sin GPU NVIDIA), por lo que el preview local valida voz, mezcla, timing, subtítulos y VFX óptico sin lip-sync neuronal local; para animación labial/corporal real se pasa el clip de Google Flow (`Veo 3.1 First-Last-Frame`) o GPU (`Hallo2`/`LivePortrait`) por `--input-video`.
+  - **Recomendación sobre el vídeo**: **Conservar [`PRUEBA_01_LOCAL_PREVIEW_CRF16.mp4`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/PRUEBA_01_LOCAL_PREVIEW_CRF16.mp4) y [`I2V_PACK/`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/PRUEBA_01_GENJUTSU/I2V_PACK/) como base oficial de preproducción** (audio, timing y VFX validados sin errores) y, si quieres movimiento labial real, generar el clip en Google Flow (`Veo 3.1 FLF`) o GPU con `03_VOZ_LIMPIA_PARA_LIPSYNC.wav` y procesarlo con `--input-video`.
+
+## `DUDAS`: Nuevo Proyecto de Aprendizaje Matemático «AGRO FESTIVO» (PRONOEI Huerta Parqui) · 2026-11-15
+
+- **Pacto y Alcance**:
+  - Tomando como plantilla estructural y visual [`PROYECTO DE APRENDIZAJE N° setiembree 24 (3).docx`](file:///workspaces/PRUEBA-CLI/DUDAS/PROYECTO%20DE%20APRENDIZAJE%20N%C2%B0%20setiembree%2024%20(3).docx), se elaboró el nuevo Proyecto de Aprendizaje titulado **«AGRO FESTIVO»** para el **PRONOEI Huerta Parqui** (3, 4 y 5 años, turno mañana, del lunes 16 al martes 24 de noviembre), orientado al área de **Matemática** (*Resuelve problemas de cantidad*: conteo, clasificación y sustracción/resta en base a cantidad concreta).
+- **Archivos Generados y Revisados Visualmente**:
+  1. **Ilustración de Portada Generada y Revisada Visualmente ([`agro_festivo_cover_1794711247557.jpg`](file:///home/vscode/.gemini/antigravity-cli/brain/ded55869-6c3b-4953-b647-b5e4f1888349/agro_festivo_cover_1794711247557.jpg))**:
+     - Revisada visualmente e integrada en el encabezado del `.docx` (`word/media/image1.png`): niños de inicial en el puesto festivo «Agro Festivo» con banderines, semillas clasificadas (quinua, tarwi, habas), sacos de semilla, papas, chuño y balanza de dos platillos sobre fondo blanco limpio, manteniendo la continuidad de estilo con la imagen de referencia.
+  2. **Hoja de Cálculo Google Sheets / Excel y Documento Word Rediseñados ([`PROYECTO_DE_APRENDIZAJE_AGRO_FESTIVO.xlsx`](file:///workspaces/PRUEBA-CLI/DUDAS/PROYECTO_DE_APRENDIZAJE_AGRO_FESTIVO.xlsx), [`PROYECTO DE APRENDIZAJE - AGRO FESTIVO.xlsx`](file:///workspaces/PRUEBA-CLI/DUDAS/PROYECTO%20DE%20APRENDIZAJE%20-%20AGRO%20FESTIVO.xlsx), [`PROYECTO DE APRENDIZAJE - AGRO FESTIVO.docx`](file:///workspaces/PRUEBA-CLI/DUDAS/PROYECTO%20DE%20APRENDIZAJE%20-%20AGRO%20FESTIVO.docx))**:
+     - Rediseñados con encuadre simétrico (10 columnas en `.xlsx` y tablas fijas de `9740 dxa` en `.docx` sin celdas vacías ni guiones), justificación completa en todas las celdas de contenido, situación significativa concisa y consistente, títulos diarios con estilo pedagógico de Educación Inicial y fichas diarias independientes para las **7 sesiones completas** del Lunes 16 al Martes 24 de noviembre.
+
+## `TIKTOK_RADAR`: Correcciones de Auditoría y Mejoras Integrales en Motores de Generación, Animación, Vídeo y Renderizado · 2026-11-13
+
+- **Pacto y Alcance**:
+  - Aplicadas y verificadas todas las correcciones de auditoría pendientes y la batería completa de mejoras en Remotion React, inyección de contexto real de noticia, subtítulos palabra/oración, masterización EBU R128 de 2 pasadas, caché modular NLE y resiliencia de Flow/Portada.
+  - **Pendiente diferido por el usuario**: la sincronización y despliegue hacia `STANDALONE_TIKTOK_RADAR` / AWS (`tiktok_remote`) queda aplazada hasta nueva orden. La ejecución en vivo contra Google Flow y WhatsApp Web real se mantiene pendiente de prueba en el entorno AWS/browser con sesión iniciada.
+
+- **Archivos Modificados, Generados y Estado de Verificación**:
+  1. **Motor Remotion y Renderizado por Lotes ([`TIKTOK_RADAR/motion_engine/render_batch.mjs`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/render_batch.mjs), [`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py), [`Root.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Root.tsx), [`ChiaroscuroBackground.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/components/ChiaroscuroBackground.tsx), [`VeritasiumStatComparison.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumStatComparison.tsx), [`VeritasiumAltimeter.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumAltimeter.tsx), [`VeritasiumTechChip.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumTechChip.tsx), [`VeritasiumCyberRadar.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumCyberRadar.tsx), [`VeritasiumBlueprint.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumBlueprint.tsx), [`VeritasiumDocumentaryOutro.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/VeritasiumDocumentaryOutro.tsx))**:
+     - Tipografía `Montserrat` empaquetada localmente en [`TIKTOK_RADAR/motion_engine/public/fonts/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/public/fonts/) (`@font-face` via `staticFile()`), márgenes seguros unificados (`padding: "110px 40px 150px"`) sin solape con el rótulo superior ni con subtítulos CapCut, soporte multi-tema + trayectoria SVG animada en `VeritasiumStatComparison`, mapeo de géneros sin falsos positivos (`_resolve_genre_theme`), desambiguación `SH03` -> `VeritasiumBlueprint` y defaults honestos sin cifras inventadas.
+     - Worker `render_batch.mjs` (`@remotion/bundler` + `@remotion/renderer`) con caché Webpack en `TIKTOK_RADAR/motion_engine/.remotion_bundle` y un único navegador Chromium para renderizar las 5 escenas en lote a `crf=14`. **Verificado en E2E** y con `./node_modules/.bin/remotion compositions src/index.ts`.
+  2. **Inyección de Métricas Reales, Audio Monetizable y Subtítulos Sincronizados ([`pipeline_autonomo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/pipeline_autonomo.py), [`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py), [`flow_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/flow_generator.py))**:
+     - `extract_story_metrics` extrae titular/fuente, códigos de vuelo reales (filtrando falsos positivos como `"EN 1971"`), altitudes (`ft`), nodos (`nm`), `CVE-*` y anclas cuantitativas; `narrative_excerpt` truncado por límites de palabra completos; `synthesize_voiceover` garantiza `>= 61.1s` (`max(0.89, dur / 61.6)` + `apad`); `edge_tts` captura `WordBoundary` (`WORD_BOUNDARIES.json`) + hook opcional `faster_whisper` y reescalado conjunto en `_rescale_sentence_boundaries`; `select_prompt_for_attempt` e import protegido de Playwright en `flow_generator.py`.
+  3. **Ensamblador NLE, Portada Limpia, QC Guard y Monitoreo ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py), [`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py), [`ejecutar_todo.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ejecutar_todo.py), [`whatsapp_monitor.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/whatsapp_monitor.py), [`bot.js`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/whatsapp_bot/bot.js))**:
+     - `generate_kinetic_ass` prioriza `WORD_BOUNDARIES.json` -> `SENTENCE_BOUNDARIES.json` (ponderado por puntuación) -> `silencedetect`, usa `pysubs2.Alignment` y sustituye glifos sin soporte en Montserrat (`🔴`/`📡` -> `•`).
+     - `_render_two_pass_loudnorm` ejecuta EBU R128 de 2 pasadas (`linear=true`, `-14.0 LUFS` / `-1.0 dBTP`); intermedios HUD optimizados (`crf 15`, grano sutil `alls=2`), acreditación con `fade` (`0.30s` in / `0.35s` out), y caché modular completo en `_build_nle/` (sin mutar `meta["shots"]` en disco).
+     - `generador_portada.py` omite `pollinations.ai` anónimo con marca de agua salvo `POLLINATIONS_API_KEY`; `ejecutar_todo.py` bloquea envíos a WhatsApp cuando el QC marca `FAIL` (`_read_qc_summary`, `_dispatch_whatsapp_outcome`).
+  4. **Suite de Tests y Verificación E2E Aislada ([`TIKTOK_RADAR/tests/test_pipeline_tools.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tests/test_pipeline_tools.py))**:
+     - **Tests unitarios y JS**: `26/26` tests Python (`unittest`), `7/7` tests en `test_bot_helpers.test.js`, `6/6` tests en `npm --prefix pulso test`, `py_compile` y `node --check` superados sin errores.
+     - **Prueba E2E aislada (`G4_ESPACIO_CIENCIA`, `--skip-flow` en `/tmp/test_e2e_entregas/2026-11-13_ESPACIO`)**:
+       - Generado máster `1080x1920 @ 24fps`, `61.33s`, `32.64 MB` (`4463.9 kbps`), `-14.0 LUFS` / `-1.0 dBTP`, `0` congelados / `0` negros / `0` silencios, veredicto `WARN` (`Score: 100/100`, `errors: []`, advertencia esperada por 8 planos Flow ausentes en modo `--skip-flow`).
+       - Segunda ejecución idéntica reutilizó todo el caché (`norm_SH*`, `xfade`, `audio_master`, máster final, portada y QC) en `8.97s` frente a `462.62s` de la primera pasada.
+       - **Revisados visualmente** [`PORTADA_TIKTOK_916.jpg`](file:///tmp/test_e2e_entregas/2026-11-13_ESPACIO/PORTADA_TIKTOK_916.jpg), [`CONTACT_SHEET_QC.jpg`](file:///tmp/test_e2e_entregas/2026-11-13_ESPACIO/CONTACT_SHEET_QC.jpg) y frame SH01: portada limpia sin marcas de agua, Montserrat nítida, bullets `•` sin cajas vacías y subtítulos fuera del área de tarjetas.
+
+## Nuevo Proyecto Activo: `PERSONAJE_HIPERREALISTA` (Candidato C Oficializado + Motor Genjutsu Live-Action) · 2026-11-13
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - **Candidato C Aceptado y Oficializado**: El usuario eligió oficialmente al **Candidato C** (29 años, rasgos latinos, divulgador científico carismático/humorístico, cero canas) como identidad única del proyecto.
+  - **Objetivo Técnico Actual**: Resolver la preservación del hiperrealismo (poros, barba de 2 días, identidad facial) al pasar a vídeo con habla, movimiento de manos y efectos visuales estilo **Genjutsu Live-Action**.
+
+- **Archivos Oficializados, Generados y Revisados Visualmente**:
+  1. **Identidad Oficial Aceptada ([`PERSONAJE_OFICIAL_SEMILLA_0.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/01_semilla_sintetica/PERSONAJE_OFICIAL_SEMILLA_0.jpg))**:
+     - Firmada biométricamente en [`PERSONAJE_OFICIAL_MASTER_dna.json`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/02_adn_biometrico/PERSONAJE_OFICIAL_MASTER_dna.json) (`Poros: 16.16 PASS`).
+     - Eliminados los candidatos descartados (`CANDIDATO_A*` y `CANDIDATO_B*`).
+  2. **Keyframes Anclados 9:16 y Hoja de Continuidad (Generados y Revisados Visualmente)**:
+     - [`KF1_FRONTAL_HABLANDO_85MM.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/03_character_sheet/KF1_FRONTAL_HABLANDO_85MM.jpg): Candidato C mirando de frente a cámara, hablando y gesticulando con la mano en el pecho en el mismo estudio (`Poros: 17.55 PASS`).
+     - [`KF2_GENJUTSU_LIVEACTION_85MM.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/03_character_sheet/KF2_GENJUTSU_LIVEACTION_85MM.jpg): El mismo plano exacto con transición a Genjutsu Live-Action (luz eclipse carmesí, plumas negras de cuervo en el bokeh de lente 85mm y reflejo anular carmesí en el iris, manteniendo el 100% de poros reales en piel y mano; `Poros: 13.21 PASS`).
+     - [`HOJA_CONTINUIDAD_GENJUTSU.jpg`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/03_character_sheet/HOJA_CONTINUIDAD_GENJUTSU.jpg): Comparativa triple de continuidad biométrica y textural.
+  3. **Motor y Vídeo Demostrativo Genjutsu ([`genjutsu_video_engine.py`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/tools/genjutsu_video_engine.py) y [`DEMO_GENJUTSU_HIPERREALISTA_CRF16.mp4`](file:///workspaces/PRUEBA-CLI/PERSONAJE_HIPERREALISTA/04_motor_video_voz/DEMO_GENJUTSU_HIPERREALISTA_CRF16.mp4))**:
+     - Renderizado en **1080×1920 (9:16) @ 24 fps exactos, 6.0s, H.264 High Profile CRF 16** con empuje óptico lento, fractura cromática radial y grano temporal CMOS.
+     - **Recomendación de evaluación sobre el vídeo**: **Conservar como base de estilo VFX** para las transiciones Genjutsu y conectarlo con un motor Image-to-Video + Lip-Sync (`LivePortrait` / `Hallo2` / `Veo 3.1 First-Last-Frame`) cuando se le inyecte locución completa.
+
+## Suite Remotion Broadcast 100/100 QC: 6 Composiciones Veritasium, Push-In Anti-Freeze y Pipeline NLE Completo · 2026-11-12
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Continuar la implementación del motor de render web (Remotion React + Chromium Headless) para completar la suite gráfica, integrarlo en el ensamblador NLE y alcanzar el estándar broadcast 100/100.
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Suite Ampliada a 6 Composiciones Especializadas ([`motion_engine/src/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/))**:
+     - **`VeritasiumAltimeter.tsx` (G1 Aviación / Telemetría)**: Horizonte artificial (PFD attitude con inclinación y pitch/roll), altímetro numérico barométrico de gran escala, aguja de tasa de caída en FPM (-3,400 FPM), perfil Bézier de descenso y alerta parpadeante "PULL UP TERRAIN".
+     - **`VeritasiumTechChip.tsx` (G3 Hardware / Chips 2nm / IA)**: Arquitectura de silicio a escala nanométrica (2nm GAA Nanosheet), densidad de 33.7 billones de transistores, bus de pistas animadas con flujo de fotones, emisión de láser EUV 13.5nm y barra de escalabilidad térmica.
+     - **`VeritasiumCyberRadar.tsx` (G2 Ciberataques / Guerra Digital)**: Radar de barrido 360°, flujo de paquetes DDoS (14.8M PPS), severidad CVSS 9.8, topología de red con nodos interconectados y protocolo de mitigación DEFCON 2.
+     - **`VeritasiumStatComparison.tsx` (G4 Espacio / Universal)**: Comparativa de inversión/impacto monumental con barras cinéticas elásticas (`spring()`), tag de multiplicador de disrupción cuantitativa (16.6X) y ticket de auditoría técnica oficial.
+     - **`VeritasiumBlueprint.tsx` (SH10 Esquema Técnico 3D / Blueprint)**: Malla técnica isométrica, láser vertical de escaneo continuo, 3 subsistemas con chips de estado y métricas en vivo.
+     - **`VeritasiumDocumentaryOutro.tsx` (SH13 Cierre Documental por Primeros Principios)**: Gran cita de reflexión filosófica con comilla Chiaroscuro gigante, indicador de primeros principios y sello oficial de verificación.
+  2. **Dinamismo Cinemático Continuo y Anti-Freeze Total (0 Segundos Estáticos)**:
+     - Implementado empuje lento de cámara (*slow cinematic push-in*: `cameraZoom = 1 + frame * 0.0007`) en todas las composiciones React.
+     - Se eliminan por completo los falsos positivos de `freezedetect` de FFmpeg a -50 dB sin necesidad de postprocesado extra.
+  3. **Despacho Inteligente por Plano en el Ensamblador ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py) y [`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py))**:
+     - Creada función `get_composition_for_shot(genre, shot_id, shot_type)` que asigna automáticamente la plantilla adecuada:
+       - `SH01`, `SH02`, `SH03`: Telemetría / Radar de la categoría.
+       - `SH10`: Blueprint técnico de subsistemas y vectores de fallo.
+       - `SH11`: Comparativa estadística / evidencia técnica.
+       - `SH13`: Cierre documental y primeros principios.
+  4. **Auditoría Técnica Broadcast Oficializada**:
+     - Veredicto en [`QC_AUDIT_REPORT.json`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/QC_AUDIT_REPORT.json): **PASS (Score: 100/100)**.
+     - Cuadros congelados: **0**, pantallas negras: **0**, audio: **-14.4 LUFS** (True Peak: -0.9 dBTP).
+     - Hoja de contactos ([`CONTACT_SHEET_QC.jpg`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/CONTACT_SHEET_QC.jpg)), vídeo de Safe Zone ([`VIDEO_QC_SAFEZONE.mp4`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/VIDEO_QC_SAFEZONE.mp4)) y reproductor interactivo ([`REPORTE_INSPECCION.html`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/REPORTE_INSPECCION.html)) generados y actualizados.
+     - Portada oficial Flux 9:16 ([`PORTADA_TIKTOK_916.jpg`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/PORTADA_TIKTOK_916.jpg)) y hashtags listos.
+
+- **Recomendación sobre el Vídeo**:
+  - **Conservar y oficializar** esta versión del máster: los gráficos web Remotion integrados en SH01, SH02, SH03, SH10, SH11 y SH13 elevan radicalmente el aspecto visual por encima de las placas FFmpeg previas, el timing acústico de subtítulos Montserrat es impecable y la mezcla de audio Epidemic Sound con ducking cumple con los estándares más estrictos de emisión.
+
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Realizar actualizaciones profesionales en el render web para elevar el estándar de motion graphics al nivel broadcast/documental Veritasium.
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Componentes Modulares Chiaroscuro en React ([`motion_engine/src/components/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/components/))**:
+     - `ChiaroscuroBackground.tsx`: Malla técnica de precisión, halo volumétrico con respiración sinusoidal, sistema de 24 partículas ambientales orgánicas flotantes (polvo de estudio/luz difusa), viñeta radial profunda y micro-scanlines analógicas broadcast.
+     - `TacticalHeader.tsx`: Cabecera táctica unificada con indicador de estado pulsante (LED vivo), etiqueta de sector, SMPTE Timecode milimétrico (`00:00:SS:FF`) y contador de fotogramas a 24 fps.
+  2. **Suite Completa de 4 Composiciones Especializadas ([`motion_engine/src/Root.tsx`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/src/Root.tsx))**:
+     - **`VeritasiumAltimeter.tsx` (G1 Aviación)**: Horizonte artificial (PFD attitude con inclinación y pitch/roll), altímetro numérico barométrico de gran escala, aguja de tasa de caída en FPM (-3,400 FPM), perfil Bézier de descenso y alerta parpadeante "PULL UP TERRAIN".
+     - **`VeritasiumTechChip.tsx` (G3 Hardware / Chips 2nm / IA)**: Arquitectura de silicio a escala nanométrica (2nm GAA Nanosheet), densidad de 33.7 billones de transistores, bus de pistas animadas con flujo de fotones, emisión de láser EUV 13.5nm y barra de escalabilidad térmica.
+     - **`VeritasiumCyberRadar.tsx` (G2 Ciberataques / Guerra Digital)**: Radar de barrido 360°, flujo de paquetes DDoS (14.8M PPS), severidad CVSS 9.8, topología de red con nodos interconectados y protocolo de mitigación DEFCON 2.
+     - **`VeritasiumStatComparison.tsx` (G4 Espacio / Universal)**: Comparativa de inversión/impacto monumental con barras cinéticas elásticas (`spring()`), tag de multiplicador de disrupción cuantitativa (16.6X) y ticket de auditoría técnica oficial.
+  3. **Puente Python Acelerado con Modo Still Frame ([`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py))**:
+     - Agregada función `render_remotion_still()` usando `remotion still` para inspección visual de fotogramas clave en ~1-2 segundos.
+     - Mapeo dinámico y construcción de props inteligentes (`get_composition_for_genre`, `build_category_props`, `render_category_motion_graphic`).
+  4. **Integración Universal en el Ensamblador ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py))**:
+     - Los planos técnicos y de telemetría (`SH02`, o con tipo `infografia`, `telemetria`, `datos`) se generan automáticamente con su composición Remotion dedicada según la categoría del vídeo.
+
+- **Pruebas y Verificación**:
+  - Renderizado still exitoso de las 4 composiciones (`/tmp/test_Veritasium*.jpg`, ~220-250 KB cada una).
+  - Renderizado de vídeo MP4 validado en `test_tech_chip.mp4`: H.264, 1080x1920 (9:16), 24 fps exactos, 466.5 KB en menos de 20 segundos.
+
+## Remotion React Motion Engine (Paso 2) y Pipeline Python Avanzado con Pysubs2 y Auto-Editor (Paso 1) · 2026-11-12
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Implementar el **Paso 1**: Instalación e integración de `pysubs2` para manipulación robusta de subtítulos ASS y `auto-editor` para ajuste inteligente de micropausas vocales.
+  - Implementar el **Paso 2**: Montar un motor web de renderizado con **Remotion** (React + Chromium Headless) para gráficos y animaciones técnicas de alta retención estilo Veritasium (curvas Bézier dinámicas, altímetros con resortes `spring()`, iluminación claroscuro y códigos SMPTE).
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Motor Web Remotion React ([`motion_engine/`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/motion_engine/) y [`remotion_renderer.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/remotion_renderer.py))**:
+     - Configurado entorno completo de Remotion con Node 20 LTS (`@remotion/cli 4.0.543`, `react`, `react-dom`) y Chromium Headless Shell verificado en Linux Debian.
+     - Diseñada la composición React `VeritasiumAltimeter.tsx` (1080x1920 vertical, 24 fps) con estética documental: fondo carbón chiaroscuro (`#0a0e16`), tarjeta frosted glass con brillo perimetral ámbar/cian, trazado SVG reactivo de trayectoria con Bézier gradient, marcador de avión animado, altímetro numérico continuo (35,000 FT -> 3,200 FT) y alerta parpadeante.
+     - Creado el puente Python `remotion_renderer.py` que permite disparar renderizados de composiciones Remotion con parámetros dinámicos (`durationInFrames`, títulos, métricas) e inyectarlas directamente en el timeline NLE.
+     - Integrado en `ensamblador_final.py`: El plano `SH02` (Telemetría de vuelo) se genera de forma nativa mediante Remotion-React y se ensambla con el resto del metraje.
+  2. **Manipulación de Subtítulos con Pysubs2 ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py))**:
+     - Instalado `pysubs2` (1.9.1).
+     - Refactorizada la función `generate_kinetic_ass`: se reemplazó la concatenación de cadenas crudas por manipulación orientada a objetos (`SSAFile`, `SSAStyle`, `SSAEvent`), garantizando estilos limpios en Montserrat Black, resaltado en Amarillo Neón y sincronización acústica real.
+  3. **Ajuste Inteligente de Silencios con Auto-Editor ([`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py))**:
+     - Instalado `auto-editor` (29.3.1).
+     - Creada la función `tighten_audio_dead_air`: analiza los bloques de silencio y acelera las micropausas (`--when-silent speed:2`, `--margin 0.15s`) manteniendo el timbre natural y blindando la duración mínima monetizable de TikTok (`>60.0s`).
+
+- **Verificación y Prueba Técnica**:
+  - Remotion renderizó la escena `VeritasiumAltimeter` en 12 segundos (502 KB) en 1080x1920 @ 24fps.
+  - Subtítulos `.ass` exportados con `pysubs2` con 57 eventos perfectamente alineados sin desfasajes.
+  - Normalización de timebase en `xfade` (`settb=AVTB,fps=24,format=yuv420p`) para compatibilidad fluida entre clips de Remotion y FFmpeg.
+  - Máster final `NOTICIERO_FINAL_62S.mp4` auditado por `video_qc_inspector.py`: **100/100 PASS** (0 congelamientos, 0 cuadros negros, -14.4 LUFS). Plano SH02 visible y verificado en la hoja de contactos `CONTACT_SHEET_QC.jpg`.
+
+
+## Estrategia B: Motor CapCut Pro Natively Recreado en Código e Integración 100/100 QC · 2026-11-11
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Implementar la **Estrategia B** (Recreación nativa de la estética CapCut Pro / Viral Reels en Python y FFmpeg) tras evaluar la viabilidad de CapCut en entornos de producción Linux.
+  - Asegurar tipografía auténtica CapCut (Montserrat Black con sticker outline de 7px), rebote kinetic elástico en ráfagas de 2-3 palabras, diseño de audio multicapa con impactos Boom sub-bass y Whooshes en cortes, y Ken Burns continuo sin cuadros congelados.
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Tipografía Oficial CapCut Pro ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py))**:
+     - Instalado paquete de fuentes del sistema `fonts-montserrat`. Mapeo validado a `Montserrat Black` OTF y `Montserrat` TTF.
+     - Subtítulos vectoriales `.ass` renderizados con `Fontname=Montserrat Black`, tamaño 78pt, borde de corte negro agresivo (`Outline=7.0`), sombra nula (`Shadow=0.0`) y resaltado de palabra activa en Amarillo Neón (`#00EAFF` en BGR) sobre blanco puro.
+     - Curva elástica de rebote optimizada a 130ms (`{\fscx82\fscy82\t(0,60,\fscx112\fscy112)\t(60,130,\fscx100\fscy100)}`) con sincronización acústica `silencedetect`.
+  2. **Diseño Sonoro CapCut Pro Multitrack ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py))**:
+     - Integrado sub-bass cinematic boom (`SFX_DARK_BOOM.wav`) en el hook inicial (`t=0.35s`).
+     - Generado e insertado efecto Whoosh dinámico (`SFX_WHOOSH_CINEMATIC.wav`, 0.36s barrido pink-noise) anclado automáticamente a cada punto de corte en `transition_times`.
+     - Mezcla masterizada con sidechain ducking (-6 dB) sobre stems de Epidemic Sound (`G1_AVIATION_TRACE_BASS` + `INSTRUMENTS`), alcanzando **-14.4 LUFS**, True Peak **-0.9 dBFS** y LRA **2.0 LU** (EBUR128 broadcast).
+  3. **Ken Burns Anti-Freeze y Transiciones Micro-Dissolve**:
+     - Eliminados los 9 eventos de congelamiento previo aplicando desplazamiento subpixel continuo (`crop=1080:1920:x=...:y=...`) y micrograno analógico temporal (`noise=alls=5:allf=t`) en HUDs vectoriales.
+     - Transiciones cinematográficas rápidas de 0.35s (`xfade=fadeblack,smoothleft,circleopen`).
+  4. **Caché Modular de Renderizado**:
+     - Aceleración de compilaciones subsecuentes: reutiliza clips normalizados y pista de vídeo xfade si no hay cambios en la estructura de planos, reduciendo el render a menos de 2 minutos. Opción `--force-rebuild` para renders limpios.
+  5. **Corrección en Generador de Portadas ([`generador_portada.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/generador_portada.py))**:
+     - Corregido `ValueError: not enough values to unpack` en la generación de fondos Flux, alineando el unpacking de categorías con `_detect_category_flags`.
+  6. **Auditoría Técnica Broadcast ([`video_qc_inspector.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/video_qc_inspector.py))**:
+     - Veredicto oficial en `QC_AUDIT_REPORT.json`: **PASS** con **Score 100/100**.
+     - Cuadros congelados: **0**, pantallas negras: **0**, cortes de audio: **0**.
+     - Hoja de contactos generada (`CONTACT_SHEET_QC.jpg`) y vídeo debug de Safe Zone verificado (`VIDEO_QC_SAFEZONE.mp4`).
+
+- **Archivos de Entrega Auditados y Generados**:
+  - Máster final: [`entregas/2026-11-04_AVIACION_CATASTROFES/NOTICIERO_FINAL_62S.mp4`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/NOTICIERO_FINAL_62S.mp4) (62.0s exactos, 1080x1920, 24 fps, -14.4 LUFS).
+  - Portada oficial: [`entregas/2026-11-04_AVIACION_CATASTROFES/PORTADA_TIKTOK_916.jpg`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/PORTADA_TIKTOK_916.jpg) (Safe Zone 3:4, fondo Flux).
+  - Hashtags y copy: [`entregas/2026-11-04_AVIACION_CATASTROFES/HASHTAGS_TIKTOK.txt`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/HASHTAGS_TIKTOK.txt).
+  - Reporte interactivo: [`entregas/2026-11-04_AVIACION_CATASTROFES/REPORTE_INSPECCION.html`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/REPORTE_INSPECCION.html).
+
+
+## Sistema de Control de Calidad (QC/QA) Broadcast e Inspector Frame a Frame Oficializado · 2026-11-11
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Investigar arquitecturas y estrategias en repositorios de GitHub de generación automatizada (MoneyPrinterTurbo, ShortGPT, Remotion) y control de calidad audiovisual (QC_Scanner, QCTools).
+  - Implementar una funcionalidad infalible para auditar balances de audio, revisar el metraje frame por frame, detectar cuadros congelados o estáticos, pantallas negras y desborde de gráficos fuera de la Safe Zone de TikTok.
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Motor de Auditoría Técnica ([`video_qc_inspector.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/video_qc_inspector.py))**:
+     - *Auditoría Acústica EBUR128:* Comprueba sonoridad integrada (-14.0 a -15.0 LUFS), rango dinámico (LRA) y True Peak (<= -1.0 dBTP anti-distorsión en móviles) más detección de cortes de sonido (`silencedetect`).
+     - *Detección de Congelamiento (`freezedetect`):* Escaneo ultrarrápido a 15x de velocidad en FFmpeg para detectar frames congelados o fotos fijas (>1.25s) producidas por fallos o loops de generación.
+     - *Detección de Pantallas Negras (`blackdetect`):* Detección automática de pérdidas de señal o transiciones rotas.
+     - *Hoja de Contactos (Contact Sheet):* Generación automática de `CONTACT_SHEET_QC.jpg` con una cuadrícula 4x3 de 12 fotogramas clave con código de tiempo para evaluar continuidad de color y composición de un vistazo.
+     - *Vídeo de Depuración Safe Zone (`VIDEO_QC_SAFEZONE.mp4`):* Renderizado con la retícula de interfaz oficial de TikTok (Safe Zone) superpuesta para comprobar que ningún texto o elemento HUD colisione con la barra de búsqueda superior, los botones de interacción o el caption inferior.
+  2. **Visor Web Interactivo de Inspección ([`REPORTE_INSPECCION.html`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/entregas/2026-11-04_AVIACION_CATASTROFES/REPORTE_INSPECCION.html))**:
+     - Reproductor HTML5 vertical 9:16 con controles de transporte profesional: paso a paso fotograma a fotograma (1/24s), velocidades variables (0.25x a 2.0x) y atajos de teclado (`J`, `K`, `L`, flechas, espacio).
+     - Switch dinámico para activar/desactivar la cuadrícula de Safe Zone de TikTok directamente sobre el reproductor.
+     - Botones de salto temporal inmediato a cualquier segmento con alertas técnicas o congelamiento.
+     - Puntuación técnica sobre 100 y veredicto exportable en `QC_AUDIT_REPORT.json`.
+  3. **Integración en Flujo de Producción ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py) y [`bot.js`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/whatsapp_bot/bot.js))**:
+     - El ensamblador ejecuta el QC automáticamente al finalizar el máster de 62s antes de dar por cerrada la entrega.
+     - El bot de WhatsApp extrae el veredicto y score del reporte JSON para informar el estatus de auditoría en el pie del vídeo.
+  4. **Pruebas y Validación Exitosa**:
+     - Probado sobre el máster oficial de aviación (`NOTICIERO_FINAL_62S.mp4`), generando la suite completa de artefactos sin errores.
+
+## Blindaje Total del Radar G1 y Sincronización Acústica de Subtítulos · 2026-11-11
+
+- **Pacto e Instrucción Directa del Usuario**:
+  - Implementar de inmediato el blindaje del Radar G1 (Aviación) y la sincronización de subtítulos, aplazando el despliegue de AWS para más adelante.
+
+- **Ajustes Realizados y Verificados al 100%**:
+  1. **Radar Blindado 100% Incidentes Aéreos ([`news_radar.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/news_radar.py))**:
+     - *Fuentes Depuradas:* Eliminadas todas las agencias generalistas de G1 (`infobae_mundo`, `elpais_inter`, `elmundo_inter`), evitando falsos positivos políticos o de viajes.
+     - *Nuevas Fuentes Especializadas:* Añadidas **Flying Magazine Aviation Safety** y **AVweb Global Aviation**, sumadas a **AeroTime**, **Flightradar24** y **Aviation24**.
+     - *Filtro de Incidentes Técnicos:* Definido diccionario estricto `AVIATION_INCIDENT_TERMS` (+18 a +38 pts) para primicias Mayday, fallas de motor/flaps, despresurizaciones, tren de aterrizaje e investigaciones NTSB/FAA.
+     - *Filtro Anti-Corporativo:* Definido diccionario `AVIATION_COMMERCIAL_PENALTIES` (-18 a -50 pts) que penaliza notas financieras, compra de acciones, fusiones o viajes protocolares. Las noticias no especializadas sin incidente técnico se descartan inmediatamente (`score = -999.0`).
+     - *CLI Flexible:* `--genre` ahora admite indistintamente `G1`, `G1_AVIACION`, `SLOT_1`, `SLOT_2`, `TECH`, `CIENCIA`. Verificado con noticias reales de impacto aeronáutico en la cima del ranking.
+  2. **Sincronización Acústica Real de Subtítulos ([`ensamblador_final.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/ensamblador_final.py) y [`audio_generator.py`](file:///workspaces/PRUEBA-CLI/TIKTOK_RADAR/tools/audio_generator.py))**:
+     - *Detección Acústica FFmpeg:* Creada función `extract_acoustic_speech_blocks` que analiza el audio con `ffmpeg silencedetect` (-26 dB, d=0.22s), detectando los bloques exactos de locución y las pausas reales.
+     - *Fin del Desfase y Subtítulos Flotantes:* Las ráfagas de texto (2 a 3 palabras CapCut con rebote) se calculan y anclan estrictamente dentro de los bloques de habla activa. Cuando el locutor hace una pausa dramática o respira, la pantalla queda limpia sin subtítulos congelados.
+     - *Captura Directa TTS:* En `audio_generator.py`, se integró la captura de eventos `SentenceBoundary` de Edge-TTS, exportando `SENTENCE_BOUNDARIES.json` con marcas de tiempo nativas al milisegundo.
+     - *Pruebas Unitarias Exitosas:* Validado sobre el audio máster de 62.0s de `2026-11-04_AVIACION_CATASTROFES`, generando 56 ráfagas perfectamente temporizadas sin colisiones.
 
 ## Refinamiento Integral y Entrega Directa sin Validación Previa · 2026-11-11
 
